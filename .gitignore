@@ -1,0 +1,4 @@
+*.txt
+lib/
+.refcache/
+.targets.mk
