@@ -81,6 +81,7 @@ The following keys are defined at the top-level of the JSON structure returned b
 
 - "permitted" (required, boolean): indicates whether or not the Captive Portal is open to the requesting host
 - "hmac-key" (required, string): provides a per-host key that can be used to authenticate messages from the Captive Portal enforcement server
+- "user-portal-url" (required, string): provides the URL of a web portal that can be presented a user to authenticate
 - "expire-date" (optional, datetime): indicates the time at which the Captive Portal is expected to close
 - "bytes-remaining" (optional, integer): indicates the number of bytes left, after which the Captive Portal is expected to close
 
@@ -102,6 +103,7 @@ HTTP/1.1 200 OK
 {
    "permitted": false,
    "hmac-key": "7cec81acce3176b262a46363666a01881b0e3bf60d97a98b5409b71cc60a1ac0"
+   "user-portal-url": "https:example.org/portal.html"
    "expire-date": "2014-01-01T23:28:56.782Z":
 }
 ~~~~~~~~~~

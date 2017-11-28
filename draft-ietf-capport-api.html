@@ -428,6 +428,7 @@ address {
 <ul>
 <li>&#8220;permitted&#8221; (required, boolean): indicates whether or not the Captive Portal is open to the requesting host</li>
 <li>&#8220;hmac-key&#8221; (required, string): provides a per-host key that can be used to authenticate messages from the Captive Portal enforcement server</li>
+<li>&#8220;user-portal-url&#8221; (required, string): provides the URL of a web portal that can be presented a user to authenticate</li>
 <li>&#8220;expire-date&#8221; (optional, datetime): indicates the time at which the Captive Portal is expected to close</li>
 <li>&#8220;bytes-remaining&#8221; (optional, integer): indicates the number of bytes left, after which the Captive Portal is expected to close</li>
 </ul>
@@ -446,6 +447,7 @@ HTTP/1.1 200 OK
 {
    "permitted": false,
    "hmac-key": "7cec81acce3176b262a46363666a01881b0e3bf60d97a98b5409b71cc60a1ac0"
+   "user-portal-url": "https:example.org/portal.html"
    "expire-date": "2014-01-01T23:28:56.782Z":
 }
 </pre>
