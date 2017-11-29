@@ -2,3 +2,5 @@
 lib/
 .refcache/
 .targets.mk
+lib
+draft-ietf-capport-api.xml
