@@ -94,16 +94,20 @@ To request the Captive Portal JSON content, a host sends an HTTP GET request:
 ~~~~~~~~~~
 GET /.well-known/captive-portal.json
 Host: example.org
+
 ~~~~~~~~~~
 
 The server then responds with the JSON content for that client:
 
 ~~~~~~~~~~
 HTTP/1.1 200 OK
+Cache-Control: private
+Date: Mon, 04 Dec 2013 05:07:35 GMT
+
 {
    "permitted": false,
    "hmac-key": "7cec81acce3176b262a46363666a01881b0e3bf60d97a98b5409b71cc60a1ac0"
-   "user-portal-url": "https:example.org/portal.html"
+   "user-portal-url": "https://example.org/portal.html"
    "expire-date": "2014-01-01T23:28:56.782Z":
 }
 ~~~~~~~~~~
