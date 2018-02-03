@@ -69,10 +69,10 @@ This document is focused on the second step. It is assumed that the location of 
 ## URI of Captive Portal API endpoint
 
 The URI of the API endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 [RFC2818].
-The host SHOULD not assume that the URI will be the same each time. Depending on how the Captive Portal system is configured, the URI may be unique for each host and between session for the same host.
+The host SHOULD NOT assume that the URI for a given network attachment will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network. Depending on how the Captive Portal system is configured, the URI may be unique for each host and between sessions for the same host.
 
 For example, if the Captive Portal API server is hosted at example.org, the URI's of the API could be:
-  
+
   - "https://example.org/captive-portal/api"
   - "https://example.org/captive-portal/api/X54PD"
 
