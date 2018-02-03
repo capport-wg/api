@@ -35,19 +35,20 @@ normative:
     RFC2818:
     RFC5785:
     RFC7159:
+    RFC3339:
 
 informative:
-    I-D.larose-capport-architecture:
+    I-D.ietf-capport-architecture:
 
 --- abstract
 
-This document describes an HTTP API that allows hosts to interact with a Captive Portal system on a local network.
+This document describes an HTTP API that allows hosts to interact with a Captive Portal system.
 
 --- middle
 
 # Introduction
 
-This document describes a HyperText Transfer Protocol (HTTP) Application Program Interface (API) that allows hosts to interact with a Captive Portal system on a local network. The API defined in this document has been designed to meet the requirements in the Captive Portal Architecture [I-D.larose-capport-architecture]. Specifically, the API provides:
+This document describes a HyperText Transfer Protocol (HTTP) Application Program Interface (API) that allows hosts to interact with a Captive Portal system. The API defined in this document has been designed to meet the requirements in the Captive Portal Architecture [I-D.ietf-capport-architecture]. Specifically, the API provides:
 
 - The state of captivity (whether or not the host has access to the Internet)
 - A URI that a host's browser can present to a user to get out of captivity
@@ -61,17 +62,19 @@ The Captive Portal Architecture defines three steps of interaction between hosts
 2. API Server interaction, in which a host queries the state of the captive portal and retrieves the necessary information to get out of captivity
 3. Enforcement, in which the enforcement device in the network blocks disallowed traffic, and sends ICMP messages to let hosts know they are blocked by the captive portal
 
-This document is focused on the second step. It is assumed that the location of the Captive Portal API server has been provisioned as part of the first step. The mechanism for discovering this value not covered by this document.
+This document is focused on the second step. It is assumed that the location of the Captive Portal API server has been discovered by the host as part of the first step. The mechanism for discovering the API Server endpoint is not covered by this document.
 
 # API Details
 
-## URI of Captive Portal API
+## URI of Captive Portal API endpoint
 
-In order to communicate with the captive portal API server, the URI provisioned to the host SHOULD use the form of a well-known URI [RFC5785] ending with the string ".well-known/captive-portal.json". If this suffix is not included in the URI already provisioned, a host SHOULD append the suffix when communicating to the server.
+The URI of the API endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 [RFC2818].
+The host SHOULD NOT assume that the URI for a given network attachment will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network. Depending on how the Captive Portal system is configured, the URI may be unique for each host and between sessions for the same host.
 
-The Captive Portal API MUST be accessed using HTTP over TLS on TCP port 443 (HTTPS) [RFC2818].
+For example, if the Captive Portal API server is hosted at example.org, the URI's of the API could be:
 
-For example, if the Captive Portal API server is hosted at example.org, the URI of the API would be: "https://example.org/.well-known/captive-portal.json".
+  - "https://example.org/captive-portal/api"
+  - "https://example.org/captive-portal/api/X54PD"
 
 ## JSON Keys
 
@@ -81,9 +84,9 @@ The following keys are defined at the top-level of the JSON structure returned b
 
 - "permitted" (required, boolean): indicates whether or not the Captive Portal is open to the requesting host
 - "hmac-key" (required, string): provides a per-host key that can be used to authenticate messages from the Captive Portal enforcement server
-- "user-portal-url" (required, string): provides the URL of a web portal that can be presented a user to authenticate
-- "expire-date" (optional, datetime): indicates the time at which the Captive Portal is expected to close
-- "bytes-remaining" (optional, integer): indicates the number of bytes left, after which the Captive Portal is expected to close
+- "user-portal-url" (required, string): provides the URL of a web portal that can be presented to a user to interact with
+- "expire-date" (optional, string formatted as [RFC3339] datetime): indicates the date and time after which the host will be in a captive state
+- "bytes-remaining" (optional, integer): indicates the number of bytes left, after which the host will be in a captive state
 
 Note that the use of the hmac-key is not defined in this document, but is intended for use in the enforcement step of the Captive Portal Architecture.
 
@@ -92,8 +95,9 @@ Note that the use of the hmac-key is not defined in this document, but is intend
 To request the Captive Portal JSON content, a host sends an HTTP GET request:
 
 ~~~~~~~~~~
-GET /.well-known/captive-portal.json
+GET /captive-portal/api/X54PD
 Host: example.org
+Accept: application/json
 
 ~~~~~~~~~~
 
@@ -103,12 +107,13 @@ The server then responds with the JSON content for that client:
 HTTP/1.1 200 OK
 Cache-Control: private
 Date: Mon, 04 Dec 2013 05:07:35 GMT
+Content-Type: application/json
 
 {
    "permitted": false,
    "hmac-key": "7cec81acce3176b262a46363666a01881b0e3bf60d97a98b5409b71cc60a1ac0"
    "user-portal-url": "https://example.org/portal.html"
-   "expire-date": "2014-01-01T23:28:56.782Z":
+   "expire-date": "2014-01-01T23:28:56.782Z"
 }
 ~~~~~~~~~~
 
@@ -122,17 +127,7 @@ Information passed in this protocol may include a user's personal information, s
 
 # IANA Considerations
 
-This document defines one ".well-known" URIs using the registration procedure and template from Section 5.1 of [RFC5785].
-
-##  captive-portal.json Well-Known URI Registration
-
-URI suffix:  captive-portal.json
-
-Change controller:  IETF
-
-Specification document(s):  This RFC
-
-Related information:  None
+TBD: None
 
 # Acknowledgments
 
