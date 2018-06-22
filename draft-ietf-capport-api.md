@@ -78,7 +78,7 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
 
 ## JSON Keys
 
-The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159].
+The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159]. Requests and responses for Captive Portal API SHOULD use the "application/captive+json" media type.
 
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
@@ -97,7 +97,7 @@ To request the Captive Portal JSON content, a host sends an HTTP GET request:
 ~~~~~~~~~~
 GET /captive-portal/api/X54PD
 Host: example.org
-Accept: application/json
+Accept: application/captive+json
 
 ~~~~~~~~~~
 
@@ -107,7 +107,7 @@ The server then responds with the JSON content for that client:
 HTTP/1.1 200 OK
 Cache-Control: private
 Date: Mon, 04 Dec 2013 05:07:35 GMT
-Content-Type: application/json
+Content-Type: application/captive+json
 
 {
    "permitted": false,
@@ -117,7 +117,7 @@ Content-Type: application/json
 }
 ~~~~~~~~~~
 
-# Security Considerations
+# Security Considerations {#security}
 
 TBD: Provide complete security requirements and analysis.
 
@@ -127,7 +127,42 @@ Information passed in this protocol may include a user's personal information, s
 
 # IANA Considerations
 
-TBD: None
+This document registers the media type for Captive Portal API JSON text, "application/captive+json".
+
+Type name: application
+
+Subtype name: captive+json
+
+Required parameters: None
+
+Optional parameters: None
+
+Encoding considerations: Encoding considerations are identical to
+those specified for the "application/json" media type.
+
+Security considerations: See {{security}}
+
+Interoperability considerations: This document specifies format of
+conforming messages and the interpretation thereof.
+
+Published specification: This document
+
+Applications that use this media type: This media type is intended to be used
+by servers presenting the Captive Portal API, and clients connecting to such
+captive networks.
+
+Additional information: None
+
+Person & email address to contact for further information:  See
+Authors' Addresses section.
+
+Intended usage: COMMON
+
+Restrictions on usage: None
+
+Author: CAPPORT IETF WG
+
+Change controller: IETF
 
 # Acknowledgments
 
