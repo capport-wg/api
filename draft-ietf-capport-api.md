@@ -129,40 +129,50 @@ Information passed in this protocol may include a user's personal information, s
 
 This document registers the media type for Captive Portal API JSON text, "application/captive+json".
 
-Type name: application
+Type name:
+: application
 
-Subtype name: captive+json
+Subtype name:
+: captive+json
 
-Required parameters: None
+Required parameters:
+: None
 
-Optional parameters: None
+Optional parameters:
+: None
 
-Encoding considerations: Encoding considerations are identical to
-those specified for the "application/json" media type.
+Encoding considerations:
+: Encoding considerations are identical to those specified for the "application/json" media type.
 
-Security considerations: See {{security}}
+Security considerations:
+: See {{security}}
 
-Interoperability considerations: This document specifies format of
-conforming messages and the interpretation thereof.
+Interoperability considerations:
+: This document specifies format of conforming messages and the interpretation thereof.
 
-Published specification: This document
+Published specification:
+: This document
 
-Applications that use this media type: This media type is intended to be used
-by servers presenting the Captive Portal API, and clients connecting to such
-captive networks.
+Applications that use this media type:
+: This media type is intended to be used by servers presenting the Captive Portal API, and clients connecting to such captive networks.
 
-Additional information: None
+Additional information:
+: None
 
-Person & email address to contact for further information:  See
-Authors' Addresses section.
+Person & email address to contact for further information:
+: See Authors' Addresses section.
 
-Intended usage: COMMON
+Intended usage:
+: COMMON
 
-Restrictions on usage: None
+Restrictions on usage:
+: None
 
-Author: CAPPORT IETF WG
+Author:
+: CAPPORT IETF WG
 
-Change controller: IETF
+Change controller:
+: IETF
 
 # Acknowledgments
 
