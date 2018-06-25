@@ -34,7 +34,7 @@ author:
 normative:
     RFC2818:
     RFC3339:
-    RFC5019:
+    RFC5280:
     RFC5785:
     RFC6066:
     RFC6960:
@@ -83,10 +83,12 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
 
 The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exhange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
 
-The client SHOULD validate the status of the certificate presented by the API server using OCSP {{RFC6960}}. However, communicating with an OCSP server may be a challenge on a captive network, since general network access is blocked. There are two options the API server can employ to solve this problem:
+The client may attempt to use OCSP {{RFC6960}} to validate the status of the certificate presented by the API server. However, communicating with an OCSP server may be a challenge on a captive network, since general network access is blocked. There are two options the API server can employ to solve this problem:
 
-1. API servers SHOULD support OCSP stapling via the TLS Certificate Status Request extension {{RFC6066}}. This avoids the client directly communicating with an OCSP server.
-2. Captive networks SHOULD allow (whitelist) traffic from the client to OCSP servers in order to allow status validation. This whitelist may be limited to lightweigth OSCP queries {{RFC5019}}.
+1. API servers SHOULD support OCSP stapling via the TLS Certificate Status Request extension {{RFC6066}}. This avoids the client directly communicating with an OCSP server, which makes this solution preferable to the alternatives.
+2. Captive networks SHOULD also allow (whitelist) traffic from the client to OCSP servers in order to allow status validation.
+
+Some clients may also try to validate the certificate chain using a URI specified in the Authority Information Access extension {{RFC5280}}. The captive network SHOULD similarly whitelist traffic for these connections.
 
 If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network by being redirected to a web portal.
 
