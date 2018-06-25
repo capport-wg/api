@@ -78,7 +78,7 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
 
 ## JSON Keys
 
-The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159]. Requests and responses for Captive Portal API SHOULD use the "application/captive+json" media type.
+The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159]. Requests and responses for the Captive Portal API use the "application/captive+json" media type.
 
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
