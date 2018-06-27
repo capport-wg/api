@@ -33,9 +33,12 @@ author:
 
 normative:
     RFC2818:
-    RFC5785:
-    RFC7159:
     RFC3339:
+    RFC5280:
+    RFC5785:
+    RFC6066:
+    RFC6960:
+    RFC7159:
 
 informative:
     I-D.ietf-capport-architecture:
@@ -75,6 +78,16 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
 
   - "https://example.org/captive-portal/api"
   - "https://example.org/captive-portal/api/X54PD"
+  
+### Server Authentication
+
+The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exhange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
+
+Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server.
+
+Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network will need to allow client access to the host specified in the URI.
+
+If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network by being redirected to a web portal.
 
 ## JSON Keys
 
