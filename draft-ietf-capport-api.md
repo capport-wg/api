@@ -7,7 +7,7 @@ category: std
 
 ipr: trust200902
 keyword: Internet-Draft
-
+workgroup: Captive Portal Interaction
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
 
@@ -78,10 +78,10 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
 
   - "https://example.org/captive-portal/api"
   - "https://example.org/captive-portal/api/X54PD"
-  
+
 ### Server Authentication
 
-The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exhange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
+The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
 
 Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server.
 
@@ -132,7 +132,7 @@ TBD: Provide complete security requirements and analysis.
 
 ## Privacy Considerations
 
-Information passed in this protocol may include a user's personal information, such as a full name and credit card details. Therefore, it is important that Captive Portal API Servers do not allow access to the Captive Portal API over unecrypted sessions.
+Information passed in this protocol may include a user's personal information, such as a full name and credit card details. Therefore, it is important that Captive Portal API Servers do not allow access to the Captive Portal API over unencrypted sessions.
 
 # IANA Considerations
 
