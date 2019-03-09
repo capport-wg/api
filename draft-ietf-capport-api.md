@@ -57,6 +57,13 @@ This document describes a HyperText Transfer Protocol (HTTP) Application Program
 - A URI that a host's browser can present to a user to get out of captivity
 - An encrypted connection (TLS for both the API and portal URI)
 
+# Terminology {#terms}
+
+This document leverages the terminology and components described in {{I-D.ietf-capport-architecture}} and additionally  uses the following association:
+
+  - host: The host that intreacts with the captive portal API is typically some application running on the User Equipment that is connected to the Captive Network.
+  - Captive Portal API Server: The server exposing the API's defined in this document to the host. This is also referred to as the API server in this document.
+
 # Workflow
 
 The Captive Portal Architecture defines three steps of interaction between hosts and a Captive Portal service:
@@ -67,7 +74,7 @@ The Captive Portal Architecture defines three steps of interaction between hosts
 
 This document is focused on the second step. It is assumed that the location of the Captive Portal API server has been discovered by the host as part of the first step. The mechanism for discovering the API Server endpoint is not covered by this document.
 
-# API Details
+# API Details {#api-details}
 
 ## URI of Captive Portal API endpoint
 
@@ -79,29 +86,31 @@ For example, if the Captive Portal API server is hosted at example.org, the URI'
   - "https://example.org/captive-portal/api"
   - "https://example.org/captive-portal/api/X54PD"
 
-### Server Authentication
+### Server Authentication {#server-auth}
 
 The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
 
-Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server.
+Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. In addition to connections to OCSP responders/CRL's, a captive network may also permit connections to NTP servers or other time sync mechnisms to allow the clients to accurately validate the certificates.
 
 Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network will need to allow client access to the host specified in the URI.
 
 If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network by being redirected to a web portal.
 
-## JSON Keys
+## JSON Keys  {#json-keys}
 
 The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159]. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
 
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
-- "permitted" (required, boolean): indicates whether or not the Captive Portal is open to the requesting host
-- "user-portal-url" (required, string): provides the URL of a web portal that can be presented to a user to interact with
-- "expire-date" (optional, string formatted as [RFC3339] datetime): indicates the date and time after which the host will be in a captive state
-- "bytes-remaining" (optional, integer): indicates the number of bytes left, after which the host will be in a captive state
+- "captive" (required, boolean): indicates whether the host is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the host is captive (i.e captive=true), it may still be allowed enough access for it to perform {{server-auth}}.
+- "user-portal-url" (required, string): provides the URL of a web portal that can be presented to a user to interact with.
+- "vendor-info-url" (optional, string): provides the URL of a webpage or site where the operator of the network has information that it wishes to share with the user (e.g. store info, maps, flight status, entertainment).
+- "expire-date" (optional, string formatted as [RFC3339] datetime): indicates the date and time after which the host will be in a captive state. The API server SHOULD include this value if the host is not captive (i.e captive=false) and can omit this value for a captive host.
+- "bytes-remaining" (optional, integer): indicates the number of bytes left, after which the host will be in a captive state.
 
-## Example Exchange
+## An Example Interaction {#example}
 
+A host connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity.
 To request the Captive Portal JSON content, a host sends an HTTP GET request:
 
 ~~~~~~~~~~
@@ -120,21 +129,24 @@ Date: Mon, 04 Dec 2013 05:07:35 GMT
 Content-Type: application/captive+json
 
 {
-   "permitted": false,
-   "user-portal-url": "https://example.org/portal.html"
+   "captive": true,
+   "user-portal-url": "https://example.org/portal.html",
+   "vendor-info-url": "https://flight.example.com/entertainment",
    "expire-date": "2014-01-01T23:28:56.782Z"
 }
 ~~~~~~~~~~
+
+Upon receiving this information the host will provide this information to the user so that they may navigate the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the host SHOULD query the API server again to verify that it is no longer captive.
 
 # Security Considerations {#security}
 
 TBD: Provide complete security requirements and analysis.
 
-## Privacy Considerations
+## Privacy Considerations {#privacy}
 
 Information passed in this protocol may include a user's personal information, such as a full name and credit card details. Therefore, it is important that Captive Portal API Servers do not allow access to the Captive Portal API over unencrypted sessions.
 
-# IANA Considerations
+# IANA Considerations {#iana-section}
 
 This document registers the media type for Captive Portal API JSON text, "application/captive+json".
 
@@ -183,6 +195,6 @@ Author:
 Change controller:
 : IETF
 
-# Acknowledgments
+# Acknowledgments {#thanksall}
 
 This work in this document was started by Mark Donnelly and Margaret Cullen. Thanks to everyone in the CAPPORT Working Group who has given input.
