@@ -17,7 +17,7 @@ author:
     name: Tommy Pauly
     role: editor
     org: Apple Inc.
-    street: 1 Infinite Loop
+    street: One Apple Park Way
     city: Cupertino, California 95014
     country: United States of America
     email: tpauly@apple.com
