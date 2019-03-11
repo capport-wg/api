@@ -104,7 +104,7 @@ The Captive Portal API data structures are specified in JavaScript Object Notati
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
 - "captive" (required, boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
-- "user-portal-url" (required, string): provides the URL of a web portal which which a user can interact.
+- "user-portal-url" (required, string): provides the URL of a web portal with which a user can interact.
 - "vendor-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g. store info, maps, flight status, or entertainment).
 - "expire-date" (optional, string formatted as {{RFC3339}} datetime): indicates the date and time after which the client will be in a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and SHOULD omit this value for captive clients.
 - "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state.
