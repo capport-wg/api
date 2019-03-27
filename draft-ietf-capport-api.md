@@ -39,7 +39,7 @@ normative:
     RFC5905:
     RFC6066:
     RFC6960:
-    RFC7159:
+    RFC8259:
 
 informative:
     I-D.ietf-capport-architecture:
@@ -99,7 +99,7 @@ If the client is unable to validate the certificate presented by the API server,
 
 ## JSON Keys  {#json-keys}
 
-The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC7159]. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
+The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC8259]. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
 
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
