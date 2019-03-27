@@ -62,18 +62,18 @@ This document describes a HyperText Transfer Protocol (HTTP) Application Program
 
 This document leverages the terminology and components described in {{I-D.ietf-capport-architecture}} and additionally  uses the following association:
 
-  - Captive Portal Client: The client that interacts with the captive portal API is typically some application running on the User Equipment that is connected to the Captive Network. This is also referred to as the "client" in this document.
+  - Captive Portal Client: The client that interacts with the Captive Portal API is typically some application running on the User Equipment that is connected to the Captive Network. This is also referred to as the "client" in this document.
   - Captive Portal API Server: The server exposing the API's defined in this document to the client. This is also referred to as the "API server" in this document.
 
 # Workflow
 
-The Captive Portal Architecture defines three steps of interaction between clients and a Captive Portal service:
+The Captive Portal Architecture defines several categories of interaction between clients and Captive Portal systems:
 
-1. Provisioning, in which a client discovers that a network has a captive portal, and learns the URI of the API server
-2. API Server interaction, in which a client queries the state of the captive portal and retrieves the necessary information to get out of captivity
-3. Enforcement, in which the enforcement device in the network blocks disallowed traffic, and sends ICMP messages to let clients know they are blocked by the captive portal
+1. Provisioning, in which a client discovers that a network has a captive portal, and learns the URI of the API server.
+2. API Server interaction, in which a client queries the state of the captive portal and retrieves the necessary information to get out of captivity.
+3. Enforcement, in which the enforcement device in the network blocks disallowed traffic.
 
-This document is focused on the second step. It is assumed that the location of the Captive Portal API server has been discovered by the client as part of the first step. The mechanism for discovering the API Server endpoint is not covered by this document.
+This document defines the mechanisms used in the second category. It is assumed that the location of the Captive Portal API server has been discovered by the client as part of Provisioning. The mechanism for discovering the API Server endpoint is not covered by this document.
 
 # API Details {#api-details}
 
