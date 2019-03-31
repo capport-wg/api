@@ -39,6 +39,7 @@ normative:
     RFC5905:
     RFC6066:
     RFC6960:
+    RFC8126:
     RFC8259:
 
 informative:
@@ -79,7 +80,7 @@ This document defines the mechanisms used in the second category. It is assumed 
 
 ## URI of Captive Portal API endpoint
 
-The URI of the API endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 [RFC2818].
+The URI of the API endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 {{RFC2818}}.
 The client SHOULD NOT assume that the URI for a given network attachment will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network. Depending on how the Captive Portal system is configured, the URI might be unique for each client host and between sessions for the same client host.
 
 For example, if the Captive Portal API server is hosted at example.org, the URI's of the API could be:
@@ -99,15 +100,17 @@ If the client is unable to validate the certificate presented by the API server,
 
 ## JSON Keys  {#json-keys}
 
-The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) [RFC8259]. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
+The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) {{RFC8259}}. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
 
 The following keys are defined at the top-level of the JSON structure returned by the API server:
 
 - "captive" (required, boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
-- "user-portal-url" (required, string): provides the URL of a web portal with which a user can interact.
+- "user-portal-url" (optional, string): provides the URL of a web portal with which a user can interact.
 - "vendor-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g. store info, maps, flight status, or entertainment).
 - "expire-date" (optional, string formatted as {{RFC3339}} datetime): indicates the date and time after which the client will be in a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and SHOULD omit this value for captive clients.
 - "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior.
+
+The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry {{iana-section}}. If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
 ## An Example Interaction {#example}
 
@@ -148,6 +151,8 @@ TBD: Provide complete security requirements and analysis.
 Information passed in this protocol may include a user's personal information, such as a full name and credit card details. Therefore, it is important that Captive Portal API Servers do not allow access to the Captive Portal API over unencrypted sessions.
 
 # IANA Considerations {#iana-section}
+
+## Captive Portal API JSON Media Type Registration
 
 This document registers the media type for Captive Portal API JSON text, "application/captive+json".
 
@@ -195,6 +200,23 @@ Author:
 
 Change controller:
 : IETF
+
+## Captive Portal API Keys Registry
+
+IANA is asked to create and maintain a new registry called "Captive Portal API Keys", which will reserve JSON keys for use in Captive Portal API data structures. The initial contents of this registry are provided in {{json-keys}}.
+
+Each entry in the registry contains the following fields:
+
+Key:
+: The JSON key being registered, in string format.
+
+Type: 
+: The type of the JSON value to be stored, as one of the value types defined in {{RFC8259}}.
+
+Description:
+: A brief description explaining the meaning of the value, how it might be used, and/or how it should be interpreted by clients.
+
+New assignments for Captive Portal API Keys Registry will be administered by IANA through Expert Review {{RFC8126}}.
 
 # Acknowledgments {#thanksall}
 
