@@ -107,7 +107,7 @@ The following keys are defined at the top-level of the JSON structure returned b
 - "user-portal-url" (required, string): provides the URL of a web portal with which a user can interact.
 - "vendor-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g. store info, maps, flight status, or entertainment).
 - "expire-date" (optional, string formatted as {{RFC3339}} datetime): indicates the date and time after which the client will be in a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and SHOULD omit this value for captive clients.
-- "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state.
+- "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior.
 
 ## An Example Interaction {#example}
 
