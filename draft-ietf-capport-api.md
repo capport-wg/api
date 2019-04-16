@@ -205,6 +205,10 @@ Description:
 : A brief description explaining the meaning of the value, how it might be used, and/or how it should be interpreted by clients.
 
 New assignments for Captive Portal API Keys Registry will be administered by IANA through Expert Review {{!RFC8126}}.
+The Designated Expert is expected to validate the existence of documentation describing new keys in a permanant
+publicly available specification. The expert is expected to validate that new keys have a clear meaning and do not
+create unnecessary confusion or overlap with existing keys. Keys that are specific to non-generic use cases, particularly
+ones that are not specified as part of an IETF document, are encouraged to use a domain-specific prefix.
 
 # Acknowledgments {#thanksall}
 
