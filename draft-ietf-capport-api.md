@@ -92,7 +92,7 @@ The following keys are defined at the top-level of the JSON structure returned b
 
 - "captive" (required, boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
 - "user-portal-url" (optional, string): provides the URL of a web portal with which a user can interact.
-- "vendor-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
+- "venue-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
 - "expire-date" (optional, string formatted as {{!RFC3339}} datetime): indicates the date and time after which the client will be in a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and SHOULD omit this value for captive clients.
 - "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior.
 
@@ -121,7 +121,7 @@ Content-Type: application/captive+json
 {
    "captive": true,
    "user-portal-url": "https://example.org/portal.html",
-   "vendor-info-url": "https://flight.example.com/entertainment",
+   "venue-info-url": "https://flight.example.com/entertainment",
    "expire-date": "2014-01-01T23:28:56.782Z"
 }
 ~~~~~~~~~~
