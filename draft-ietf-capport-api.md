@@ -98,7 +98,7 @@ The following keys are defined at the top-level of the JSON structure returned b
 
 The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry {{iana-section}}. If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
-## An Example Interaction {#example}
+## Example Interaction {#example}
 
 A client connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity.
 To request the Captive Portal JSON content, a client sends an HTTP GET request:
@@ -130,7 +130,11 @@ Upon receiving this information the client will provide this information to the 
 
 # Security Considerations {#security}
 
-TBD: Provide complete security requirements and analysis.
+One of the goals of this protocol is to improve the security of the communication between client hosts and Captive Portal systems. Client traffic is protected from passive listeners on the local network by requiring TLS-encrypted connections between the client and the Captive Portal API server, as described in {{api-details}}. All communication between the clients and the API server MUST be encrypted.
+
+In addition to encrypting communications between clients and Captive Portal systems, this protocol requires a basic level of authentication from the API server, as described in {{server-auth}}. Specifically, the API server MUST present a valid certificate on which the client can perform revocation checks. This allows the client to ensure that the API server has authority for a hostname that can be presented to a user.
+
+It is important to note that while the server authentication checks can validate a specific hostname, it is certainly possible for the API server to present a valid certificate for a hostname that uses non-standard characters or is otherwise designed to trick the user into believing that its hostname is some other, more trustworthy, name. This is a danger of any scenario in which a hostname is not typed in by a user.
 
 ## Privacy Considerations {#privacy}
 
