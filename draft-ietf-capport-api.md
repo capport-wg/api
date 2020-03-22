@@ -80,7 +80,7 @@ The purpose of accessing the Captive Portal API over an HTTPS connection is twof
 
 Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{!RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{!RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. In addition to connections to OCSP responders and CRLs, a captive network SHOULD also permit connections to Network Time Protocol (NTP) {{!RFC5905}} servers or other time-sync mechnisms to allow clients to accurately validate certificates.
 
-Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{!RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network will need to allow client access to the host specified in the URI.
+Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{!RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network MUST allow client access to the host specified in the URI.
 
 If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network by being redirected to a web portal.
 
@@ -88,14 +88,17 @@ If the client is unable to validate the certificate presented by the API server,
 
 The Captive Portal API data structures are specified in JavaScript Object Notation (JSON) {{!RFC8259}}. Requests and responses for the Captive Portal API use the "application/captive+json" media type. Clients SHOULD include this media type as an Accept header in their GET requests, and servers MUST mark this media type as their Content-Type header in responses.
 
-The following keys are defined at the top-level of the JSON structure returned by the API server:
+The following key MUST be included in the top-level of the JSON structure returned by the API server:
 
-- "captive" (required, boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
-- "user-portal-url" (optional, string): provides the URL of a web portal with which a user can interact.
-- "venue-info-url" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
-- "can-extend-session" (optional, boolean): indicates that the URL specified as "user-portal-url" allows the user to extend a session once the client is no longer in a state of captivity. This provides a hint that a client system can suggest accessing the portal URL to the user when the session is near its limit in terms of time or bytes.
-- "seconds-remaining" (optional, integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and SHOULD omit this value for captive clients.
-- "bytes-remaining" (optional, integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior.
+- "captive" (boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
+
+The following keys can be optionally included in the top-level of the JSON structure returned by the API server:
+
+- "user-portal-url" (string): provides the URL of a web portal with which a user can interact.
+- "venue-info-url" (string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
+- "can-extend-session" (boolean): indicates that the URL specified as "user-portal-url" allows the user to extend a session once the client is no longer in a state of captivity. This provides a hint that a client system can suggest accessing the portal URL to the user when the session is near its limit in terms of time or bytes.
+- "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true).
+- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true).
 
 The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry {{iana-section}}. If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
