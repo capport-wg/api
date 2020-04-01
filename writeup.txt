@@ -42,8 +42,7 @@ IPR disclosures from authors have been checked.  No IPR disclosures have been
 made with reference to this work.
 
 IANA considerations were checked.  There is a new registry for this API, which
-will need an expert assigned.  The document registers a media type, but that has
-not been sent to media-types@ietf.org for a preliminary review.  That mail has
-been requested.
+will need an expert assigned.  The document registers a media type, and mail has
+been sent to media-types@ietf.org to solicit a preliminary review.
 
 Validation is limited to nits check (which only has false positives).
