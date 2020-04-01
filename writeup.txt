@@ -1,0 +1,49 @@
+Publication request writeup for draft-ietf-capport-api-06
+
+Intended status: Proposed Standard
+Working group: capport
+Document shepherd: Martin Thomson
+
+Technical Summary:
+
+This document defines a simple HTTP API that allows a network to provide
+information about captive portal status.
+
+Working Group Summary:
+
+This document was at times controversial in discussions.  Some participants felt
+that the potential for an API of this form to be spoofed was a problem.  Some
+participants felt that this particular design was especially hard for network
+operators to deploy due to some of the inherent complexities in deployments.
+Some participants felt that it would be necessary to include more detailed
+information, such as what sites were accessible and what sites were not.  At
+times there were communication difficulties in the working group that
+exacerbated problems.  However, as a baseline set of features, both clients and
+networks have demonstrated agreement that the current shape of this document is
+acceptable.
+
+Document Quality:
+
+The document is short and concise and of high quality.  The fields that are
+defined are all driven by real client requirements and implementation experience
+in multiple implementations.  We have experience with deploying this on the IETF
+network.
+
+Personnel:
+
+Martin Thomson is document shepherd.  Barry Leiba is the responsible Area Director.
+
+Important information:
+
+This document represents the consensus of the capport WG.  There were some
+contentious issues, but there is consensus within the working group to publish.
+
+IPR disclosures from authors have been checked.  No IPR disclosures have been
+made with reference to this work.
+
+IANA considerations were checked.  There is a new registry for this API, which
+will need an expert assigned.  The document registers a media type, but that has
+not been sent to media-types@ietf.org for a preliminary review.  That mail has
+been requested.
+
+Validation is limited to nits check (which only has false positives).
