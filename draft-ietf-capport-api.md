@@ -50,7 +50,13 @@ This document describes a HyperText Transfer Protocol (HTTP) Application Program
 This document leverages the terminology and components described in {{?I-D.ietf-capport-architecture}} and additionally defines the following terms:
 
   - Captive Portal Client: The client that interacts with the Captive Portal API is typically some application running on the User Equipment that is connected to the Captive Network. This is also referred to as the "client" in this document.
-  - Captive Portal API Server: The server exposing the API's defined in this document to the client. This is also referred to as the "API server" in this document.
+  - Captive Portal API Server: The server exposing the APIs defined in this document to the client. This is also referred to as the "API server" in this document.
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+"OPTIONAL" in this document are to be interpreted as described in BCP 14
+{{!RFC2119}} {{!RFC8174}} when, and only when,
+they appear in all capitals, as shown here.
 
 # Workflow
 
@@ -60,7 +66,7 @@ The Captive Portal Architecture defines several categories of interaction betwee
 2. API Server interaction, in which a client queries the state of the captive portal and retrieves the necessary information to get out of captivity.
 3. Enforcement, in which the enforcement device in the network blocks disallowed traffic.
 
-This document defines the mechanisms used in the second category. It is assumed that the location of the Captive Portal API server has been discovered by the client as part of Provisioning. A set of mechanisms for discovering the API Server endpoint is defined in {{!I-D.ietf-capport-rfc7710bis}}.
+This document defines the mechanisms used in the second category. It is assumed that the location of the Captive Portal API server has been discovered by the client as part of Provisioning. A set of mechanisms for discovering the API Server endpoint is defined in {{?I-D.ietf-capport-rfc7710bis}}.
 
 # API Connection Details {#api-details}
 
@@ -77,7 +83,7 @@ For example, a Captive Portal system that uses per-client session URIs could use
 
 ## Server Authentication {#server-auth}
 
-The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI (such as "example.com"). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
+The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI ("example.org", in the example above). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
 
 Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{!RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{!RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. In addition to connections to OCSP responders and CRLs, a captive network SHOULD also permit connections to Network Time Protocol (NTP) {{!RFC5905}} servers or other time-sync mechnisms to allow clients to accurately validate certificates.
 
@@ -98,8 +104,8 @@ The following keys can be optionally included in the top-level of the JSON struc
 - "user-portal-url" (string): provides the URL of a web portal with which a user can interact.
 - "venue-info-url" (string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
 - "can-extend-session" (boolean): indicates that the URL specified as "user-portal-url" allows the user to extend a session once the client is no longer in a state of captivity. This provides a hint that a client system can suggest accessing the portal URL to the user when the session is near its limit in terms of time or bytes.
-- "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true).
-- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true).
+- "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not time-limited.
+- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
 
 The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry {{iana-section}}. If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
@@ -125,14 +131,28 @@ Content-Type: application/captive+json
 
 {
    "captive": true,
+   "user-portal-url": "https://example.org/portal.html"
+}
+~~~~~~~~~~
+
+Upon receiving this information the client will use this information direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the client SHOULD query the API server again to verify that it is no longer captive.
+
+When the client requests the Captive Portal JSON content after gaining external network access, the server responds with updated JSON content:
+
+~~~~~~~~~~
+HTTP/1.1 200 OK
+Cache-Control: private
+Date: Mon, 02 Mar 2020 05:08:13 GMT
+Content-Type: application/captive+json
+
+{
+   "captive": false,
    "user-portal-url": "https://example.org/portal.html",
    "venue-info-url": "https://flight.example.com/entertainment",
    "seconds-remaining": 326,
    "can-extend-session": true
 }
 ~~~~~~~~~~
-
-Upon receiving this information the client will provide this information to the user so that they may navigate the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the client SHOULD query the API server again to verify that it is no longer captive.
 
 Captive Portal JSON content can contain per-client data that is not appropriate to store in an intermediary cache. Captive Portal API servers SHOULD set the Cache-Control header in any responses to "private", or a more restrictive value {{!RFC7234}}.
 
@@ -156,50 +176,37 @@ IANA is requested to create a registration for an "application/captive+json" med
 
 This document registers the media type for Captive Portal API JSON text, "application/captive+json".
 
-Type name:
-: application
+Type name: application
 
-Subtype name:
-: captive+json
+Subtype name: captive+json
 
-Required parameters:
-: None
+Required parameters: N/A
 
-Optional parameters:
-: None
+Optional parameters: N/A
 
-Encoding considerations:
-: Encoding considerations are identical to those specified for the "application/json" media type.
+Encoding considerations: Encoding considerations are identical to those specified for the "application/json" media type.
 
-Security considerations:
-: See {{security}}
+Security considerations: See {{security}}
 
-Interoperability considerations:
-: This document specifies format of conforming messages and the interpretation thereof.
+Interoperability considerations: This document specifies format of conforming messages and the interpretation thereof.
 
-Published specification:
-: This document
+Published specification: This document
 
-Applications that use this media type:
-: This media type is intended to be used by servers presenting the Captive Portal API, and clients connecting to such captive networks.
+Applications that use this media type: This media type is intended to be used by servers presenting the Captive Portal API, and clients connecting to such captive networks.
 
-Additional information:
-: None
+Fragment identifier considerations: N/A
 
-Person & email address to contact for further information:
-: See Authors' Addresses section.
+Additional information: N/A
 
-Intended usage:
-: COMMON
+Person and email address to contact for further information: See Authors' Addresses section
 
-Restrictions on usage:
-: None
+Intended usage: COMMON
 
-Author:
-: CAPPORT IETF WG
+Restrictions on usage: N/A
 
-Change controller:
-: IETF
+Author: CAPPORT IETF WG
+
+Change controller: IETF
 
 ## Captive Portal API Keys Registry {#iana-field-reg}
 
@@ -216,7 +223,7 @@ Type:
 Description:
 : A brief description explaining the meaning of the value, how it might be used, and/or how it should be interpreted by clients.
 
-New assignments for Captive Portal API Keys Registry will be administered by IANA through Expert Review {{!RFC8126}}.
+New assignments for Captive Portal API Keys Registry will be administered by IANA using the Specification Required policy {{!RFC8126}}.
 The Designated Expert is expected to validate the existence of documentation describing new keys in a permanent
 publicly available specification. The expert is expected to validate that new keys have a clear meaning and do not
 create unnecessary confusion or overlap with existing keys. Keys that are specific to non-generic use cases, particularly
