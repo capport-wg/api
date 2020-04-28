@@ -135,7 +135,7 @@ Content-Type: application/captive+json
 }
 ~~~~~~~~~~
 
-Upon receiving this information the client will use this information direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the client SHOULD query the API server again to verify that it is no longer captive.
+Upon receiving this information the client will use this information to direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the client SHOULD query the API server again to verify that it is no longer captive.
 
 When the client requests the Captive Portal JSON content after gaining external network access, the server responds with updated JSON content:
 
