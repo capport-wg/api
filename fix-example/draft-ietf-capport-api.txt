@@ -1,0 +1,336 @@
+
+
+
+
+Network Working Group                                      T. Pauly, Ed.
+Internet-Draft                                                Apple Inc.
+Intended status: Standards Track                         D. Thakore, Ed.
+Expires: June 7, 2018                                          CableLabs
+                                                       December 04, 2017
+
+
+                           Captive Portal API
+                     draft-ietf-capport-api-latest
+
+Abstract
+
+   This document describes an HTTP API that allows hosts to interact
+   with a Captive Portal system on a local network.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on June 7, 2018.
+
+Copyright Notice
+
+   Copyright (c) 2017 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 1]
+
+Internet-Draft             Captive Portal API              December 2017
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Workflow  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  API Details . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  URI of Captive Portal API . . . . . . . . . . . . . . . .   3
+     3.2.  JSON Keys . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Example Exchange  . . . . . . . . . . . . . . . . . . . .   4
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+     4.1.  Privacy Considerations  . . . . . . . . . . . . . . . . .   4
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+     5.1.  captive-portal.json Well-Known URI Registration . . . . .   5
+   6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
+
+1.  Introduction
+
+   This document describes a HyperText Transfer Protocol (HTTP)
+   Application Program Interface (API) that allows hosts to interact
+   with a Captive Portal system on a local network.  The API defined in
+   this document has been designed to meet the requirements in the
+   Captive Portal Architecture [I-D.larose-capport-architecture].
+   Specifically, the API provides:
+
+   o  The state of captivity (whether or not the host has access to the
+      Internet)
+
+   o  A URI that a host's browser can present to a user to get out of
+      captivity
+
+   o  An encrypted connection (TLS for both the API and portal URI)
+
+2.  Workflow
+
+   The Captive Portal Architecture defines three steps of interaction
+   between hosts and a Captive Portal service:
+
+   1.  Provisioning, in which a host discovers that a network has a
+       captive portal, and learns the URI of the API server
+
+   2.  API Server interaction, in which a host queries the state of the
+       captive portal and retrieves the necessary information to get out
+       of captivity
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 2]
+
+Internet-Draft             Captive Portal API              December 2017
+
+
+   3.  Enforcement, in which the enforcement device in the network
+       blocks disallowed traffic, and sends ICMP messages to let hosts
+       know they are blocked by the captive portal
+
+   This document is focused on the second step.  It is assumed that the
+   location of the Captive Portal API server has been provisioned as
+   part of the first step.  The mechanism for discovering this value not
+   covered by this document.
+
+3.  API Details
+
+3.1.  URI of Captive Portal API
+
+   In order to communicate with the captive portal API server, the URI
+   provisioned to the host SHOULD use the form of a well-known URI
+   [RFC5785] ending with the string ".well-known/captive-portal.json".
+   If this suffix is not included in the URI already provisioned, a host
+   SHOULD append the suffix when communicating to the server.
+
+   The Captive Portal API MUST be accessed using HTTP over TLS on TCP
+   port 443 (HTTPS) [RFC2818].
+
+   For example, if the Captive Portal API server is hosted at
+   example.org, the URI of the API would be: "https://example.org/.well-
+   known/captive-portal.json".
+
+3.2.  JSON Keys
+
+   The Captive Portal API data structures are specified in JavaScript
+   Object Notation (JSON) [RFC7159].
+
+   The following keys are defined at the top-level of the JSON structure
+   returned by the API server:
+
+   o  "permitted" (required, boolean): indicates whether or not the
+      Captive Portal is open to the requesting host
+
+   o  "hmac-key" (required, string): provides a per-host key that can be
+      used to authenticate messages from the Captive Portal enforcement
+      server
+
+   o  "user-portal-url" (required, string): provides the URL of a web
+      portal that can be presented a user to authenticate
+
+   o  "expire-date" (optional, datetime): indicates the time at which
+      the Captive Portal is expected to close
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 3]
+
+Internet-Draft             Captive Portal API              December 2017
+
+
+   o  "bytes-remaining" (optional, integer): indicates the number of
+      bytes left, after which the Captive Portal is expected to close
+
+   Note that the use of the hmac-key is not defined in this document,
+   but is intended for use in the enforcement step of the Captive Portal
+   Architecture.
+
+3.3.  Example Exchange
+
+   To request the Captive Portal JSON content, a host sends an HTTP GET
+   request:
+
+   GET /.well-known/captive-portal.json
+   Host: example.org
+
+
+   The server then responds with the JSON content for that client:
+
+HTTP/1.1 200 OK
+Cache-Control: private
+Date: Mon, 04 Dec 2013 05:07:35 GMT
+
+{
+   "permitted": false,
+   "hmac-key": "7cec81acce3176b262a46363666a01881b0e3bf60d97a98b5409b71cc60a1ac0"
+   "user-portal-url": "https://example.org/portal.html"
+   "expire-date": "2014-01-01T23:28:56.782Z":
+}
+
+4.  Security Considerations
+
+   TBD: Provide complete security requirements and analysis.
+
+4.1.  Privacy Considerations
+
+   Information passed in this protocol may include a user's personal
+   information, such as a full name and credit card details.  Therefore,
+   it is important that Captive Portal API Servers do not allow access
+   to the Captive Portal API over unecrypted sessions.
+
+5.  IANA Considerations
+
+   This document defines one ".well-known" URIs using the registration
+   procedure and template from Section 5.1 of [RFC5785].
+
+
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 4]
+
+Internet-Draft             Captive Portal API              December 2017
+
+
+5.1.  captive-portal.json Well-Known URI Registration
+
+   URI suffix: captive-portal.json
+
+   Change controller: IETF
+
+   Specification document(s): This RFC
+
+   Related information: None
+
+6.  Acknowledgments
+
+   This work in this document was started by Mark Donnelly and Margaret
+   Cullen.  Thanks to everyone in the CAPPORT Working Group who has
+   given input.
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
+              DOI 10.17487/RFC2818, May 2000,
+              <https://www.rfc-editor.org/info/rfc2818>.
+
+   [RFC5785]  Nottingham, M. and E. Hammer-Lahav, "Defining Well-Known
+              Uniform Resource Identifiers (URIs)", RFC 5785,
+              DOI 10.17487/RFC5785, April 2010,
+              <https://www.rfc-editor.org/info/rfc5785>.
+
+   [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
+              2014, <https://www.rfc-editor.org/info/rfc7159>.
+
+7.2.  Informative References
+
+   [I-D.larose-capport-architecture]
+              Larose, K. and D. Dolson, "CAPPORT Architecture", draft-
+              larose-capport-architecture-01 (work in progress), June
+              2017.
+
+Authors' Addresses
+
+
+
+
+
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 5]
+
+Internet-Draft             Captive Portal API              December 2017
+
+
+   Tommy Pauly (editor)
+   Apple Inc.
+   1 Infinite Loop
+   Cupertino, California 95014
+   United States of America
+
+   Email: tpauly@apple.com
+
+
+   Darshak Thakore (editor)
+   CableLabs
+   858 Coal Creek Circle
+   Louisville, CO 80027
+   United States of America
+
+   Email: d.thakore@cablelabs.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pauly & Thakore           Expires June 7, 2018                  [Page 6]

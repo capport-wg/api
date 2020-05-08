@@ -1,0 +1,2017 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2020-05-08T17:56:58.678013+00:00",
+  "repo": "capport-wg/api",
+  "labels": [
+    {
+      "name": "duplicate",
+      "description": null,
+      "color": "cccccc"
+    },
+    {
+      "name": "enhancement",
+      "description": null,
+      "color": "84b6eb"
+    },
+    {
+      "name": "invalid",
+      "description": null,
+      "color": "e6e6e6"
+    },
+    {
+      "name": "design",
+      "description": null,
+      "color": "0052cc"
+    },
+    {
+      "name": "has-consensus",
+      "description": null,
+      "color": "0e8a16"
+    },
+    {
+      "name": "editorial",
+      "description": null,
+      "color": "bfd4f2"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWUyNzg4Njk4MTc=",
+      "title": ".well-known",
+      "url": "https://github.com/capport-wg/api/issues/2",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I don't think that we need this.  7710 gives us an entire URI, as can PvD.",
+      "createdAt": "2017-12-04T04:48:39Z",
+      "updatedAt": "2018-03-02T03:05:20Z",
+      "closedAt": "2018-03-02T03:05:20Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I agree that we can use the URI from the DHCP option or from PvD. The reason I went this route was to avoid the scheme that was in the API draft to start with, which seemed to be:\r\n\r\n- If you access the 7710 URI with a GET, you'll receive the HTTP for the user interactive portal\r\n- If you access the 7710 URI with a POST, you'll get the JSON API\r\n\r\nThat seemed problematic (a) because it implies the user portal and API are co-located and (b) it seemed overly complex.\r\n\r\nDo you have a preference for what methods are valid to access the JSON API, and whether we should specify that the URI needs to be JSON? My concern was that if the DHCP option or whatever pointed to something that was clearly .html, something's wrong, and using a well-known JSON URI to compare against would be a way to detect that.",
+          "createdAt": "2017-12-06T16:56:06Z",
+          "updatedAt": "2017-12-06T16:56:06Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@martinthomson Thoughts on the method for fetching the JSON API, or if that's a non-issue?",
+          "createdAt": "2017-12-21T23:43:36Z",
+          "updatedAt": "2017-12-21T23:43:36Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Let's take this to the list.",
+          "createdAt": "2018-01-01T23:42:51Z",
+          "updatedAt": "2018-01-01T23:42:51Z"
+        },
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "PR #6 fixes the well-known URI language. For now there is indication of Accept and Conent-Type header usage but we haven't explicitly called it out until we get a final decision. \r\nWe can close this issue though.",
+          "createdAt": "2018-02-03T03:17:30Z",
+          "updatedAt": "2018-02-03T03:17:30Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWUyNzg4NzA1NDE=",
+      "title": "Cache-Control: private",
+      "url": "https://github.com/capport-wg/api/issues/3",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Having per-client information (esp. the HMAC key) means that you need to have text about ensuring that the information is kept private.  That means a strong admonishment for `Cache-Control: private` at a minimum.",
+      "createdAt": "2017-12-04T04:54:52Z",
+      "updatedAt": "2018-11-08T04:46:10Z",
+      "closedAt": "2018-11-08T04:46:10Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Very good point, we should add this!",
+          "createdAt": "2017-12-21T23:42:34Z",
+          "updatedAt": "2017-12-21T23:42:34Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWUyNzg4NzIwMjQ=",
+      "title": "HMAC key",
+      "url": "https://github.com/capport-wg/api/issues/4",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Should we hold the addition of this until we have something that depends on it being in the API?",
+      "createdAt": "2017-12-04T05:06:42Z",
+      "updatedAt": "2018-11-08T04:45:53Z",
+      "closedAt": "2018-11-08T04:45:53Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We certainly can, although if we want to use a key as discussed in the WG meeting for the purposes of ICMP validation, having a way to add a key here is nice for removing a bootstrapping step. Hopefully we can get an updated ICMP document out with the API document, and they can reference one another in this way.",
+          "createdAt": "2017-12-21T23:42:03Z",
+          "updatedAt": "2017-12-21T23:42:03Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed in London, remove this.",
+          "createdAt": "2018-05-02T06:39:44Z",
+          "updatedAt": "2018-05-02T06:39:44Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWUyOTQ1MTQzOTU=",
+      "title": "Server authentication",
+      "url": "https://github.com/capport-wg/api/issues/7",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [
+        "design"
+      ],
+      "body": "As David Bird pointed out, we should describe the model we assume for API server authentication.  Then we need to describe the requirements on this.\r\n\r\nAn important point here is that CRL or OCSP checking are likely to fail for a captive UE.  A recommendation for servers to use OCSP stapling is likely necessary (whitelisting CRL or OCSP servers is probably workable, but OCSP stapling is a far superior solution).",
+      "createdAt": "2018-02-05T19:30:42Z",
+      "updatedAt": "2018-11-08T04:47:42Z",
+      "closedAt": "2018-11-08T04:47:42Z",
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWUzMDE2MzgzNTU=",
+      "title": "HTTPS",
+      "url": "https://github.com/capport-wg/api/issues/8",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "To meet the architecture requirements.",
+      "createdAt": "2018-03-02T03:08:21Z",
+      "updatedAt": "2018-06-24T02:14:38Z",
+      "closedAt": "2018-06-24T02:14:37Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Note that, based on discussion, we need to mandate OCSP stapling and prohibit relying on AIA.  I can provide details as needed.",
+          "createdAt": "2018-03-05T01:40:41Z",
+          "updatedAt": "2018-03-05T01:40:41Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "See [DOH](https://github.com/dohwg/draft-ietf-doh-dns-over-https/blob/master/draft-ietf-doh-dns-over-https-latest.mkd#operational-considerations) for text.",
+          "createdAt": "2018-05-02T06:40:34Z",
+          "updatedAt": "2018-05-02T06:40:34Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think we should fold this issue in with #7, since we'll probably only want one set of text describing OCSP requirements, etc.",
+          "createdAt": "2018-06-24T02:14:37Z",
+          "updatedAt": "2018-06-24T02:14:37Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWUzMDE2Mzg2NjE=",
+      "title": "Define a media type",
+      "url": "https://github.com/capport-wg/api/issues/9",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "application/json is fine in the general sense, but if you want to ever do things like versioning, then a media type is important.  Crib from [geojson](https://tools.ietf.org/html/rfc7946#section-12) if you want a recent example.",
+      "createdAt": "2018-03-02T03:10:17Z",
+      "updatedAt": "2018-11-08T04:46:18Z",
+      "closedAt": "2018-11-08T04:46:18Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed in London, consensus to use a new media type.",
+          "createdAt": "2018-05-02T06:39:33Z",
+          "updatedAt": "2018-05-02T06:39:33Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWUzMDY4NjkzMjM=",
+      "title": "Don't require user-portal-url",
+      "url": "https://github.com/capport-wg/api/issues/10",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "darshakthakore"
+      ],
+      "labels": [],
+      "body": "That might make the api useless today, but if we ever want a non-human to use this api it might be annoying. ",
+      "createdAt": "2018-03-20T13:39:17Z",
+      "updatedAt": "2019-07-19T18:55:37Z",
+      "closedAt": "2019-07-19T18:55:37Z",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "i'm keeping this in draft 02 as it seemed like the discussion in the last side meeting seemed to need this. The problem of course is with discovery.",
+          "createdAt": "2019-03-07T23:16:02Z",
+          "updatedAt": "2019-03-07T23:16:02Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This field is optional as of -03",
+          "createdAt": "2019-07-19T18:55:37Z",
+          "updatedAt": "2019-07-19T18:55:37Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWUzMzQ2MjMzNzc=",
+      "title": "Discuss Link Relation/URL Strategy",
+      "url": "https://github.com/capport-wg/api/issues/11",
+      "state": "CLOSED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "darshakthakore"
+      ],
+      "labels": [],
+      "body": "The API document should discuss behavior around link relations, etc.",
+      "createdAt": "2018-06-21T19:18:57Z",
+      "updatedAt": "2018-11-08T05:04:02Z",
+      "closedAt": "2018-11-08T05:04:02Z",
+      "comments": []
+    },
+    {
+      "number": 15,
+      "id": "MDU6SXNzdWUzNDE5ODUyMTE=",
+      "title": "When you are done logging in, check with the API again",
+      "url": "https://github.com/capport-wg/api/issues/15",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We should really say this.\r\n\r\n(h2 server push might help automate this...)",
+      "createdAt": "2018-07-17T16:04:27Z",
+      "updatedAt": "2019-03-27T10:47:48Z",
+      "closedAt": "2019-03-27T10:47:48Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added",
+          "createdAt": "2019-03-27T10:47:48Z",
+          "updatedAt": "2019-03-27T10:47:48Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDU6SXNzdWUzNzg1NzY5NjQ=",
+      "title": "Missing a coma in 3.3 example",
+      "url": "https://github.com/capport-wg/api/issues/16",
+      "state": "CLOSED",
+      "author": "evyncke",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "There is a missing come on the user-portal-url line ;-)",
+      "createdAt": "2018-11-08T04:43:05Z",
+      "updatedAt": "2019-03-09T05:41:06Z",
+      "closedAt": "2019-03-09T05:41:06Z",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "fixed in 02",
+          "createdAt": "2019-03-09T05:41:06Z",
+          "updatedAt": "2019-03-09T05:41:06Z"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "MDU6SXNzdWUzNzg1NzcwNzI=",
+      "title": "Flip the `permitted` bit",
+      "url": "https://github.com/capport-wg/api/issues/17",
+      "state": "CLOSED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We should consider flipping the JSON key for `permitted` to its opposite to match the architecture document description",
+      "createdAt": "2018-11-08T04:43:41Z",
+      "updatedAt": "2019-03-27T10:45:54Z",
+      "closedAt": "2019-03-27T10:45:54Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Perhaps we should phrase the architecture to match the positive usage that we have here.  If we don't, then `captive` isn't a crazy notion.",
+          "createdAt": "2018-11-08T06:46:42Z",
+          "updatedAt": "2018-11-08T06:47:02Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "MDU6SXNzdWUzNzg1NzczMTk=",
+      "title": "\"bytes-remaining\" is it layer-2 or layer-3 bytes ?",
+      "url": "https://github.com/capport-wg/api/issues/18",
+      "state": "CLOSED",
+      "author": "evyncke",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 3.2 \"JSON keys\" about the \"bytes-remaining\" should probably be clear on whether the bytes are counted at layer-2 excluding management traffic or layer-3 bytes\r\n",
+      "createdAt": "2018-11-08T04:45:19Z",
+      "updatedAt": "2019-03-31T10:43:26Z",
+      "closedAt": "2019-03-31T10:43:26Z",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "that would be a discussion/question to be discussed in the working group",
+          "createdAt": "2019-03-09T06:18:19Z",
+          "updatedAt": "2019-03-09T06:18:19Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Group agreed to do:\r\n- Layer 3 byte count\r\n- Bidirectional total\r\n- Add some text that whitelisted traffic might not be counted, but client can't rely on that",
+          "createdAt": "2019-03-27T10:46:51Z",
+          "updatedAt": "2019-03-27T10:46:51Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Addressed in edb568d65ecd0905d046204d76c58d5f64f169f3",
+          "createdAt": "2019-03-31T10:43:26Z",
+          "updatedAt": "2019-03-31T10:43:26Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "MDU6SXNzdWUzNzg1NzgwNzY=",
+      "title": "Section 3.1.1. should also allow NTP",
+      "url": "https://github.com/capport-wg/api/issues/19",
+      "state": "CLOSED",
+      "author": "evyncke",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In the  \"Server Authentication\" section, there is a mention about letting OCSP go through the captive portal before being authorized, so, there should also be mention of NTP or any other time-synch protocol.",
+      "createdAt": "2018-11-08T04:49:24Z",
+      "updatedAt": "2019-03-27T10:46:02Z",
+      "closedAt": "2019-03-27T10:46:02Z",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "adding that in rev 02",
+          "createdAt": "2019-03-07T23:13:33Z",
+          "updatedAt": "2019-03-07T23:13:33Z"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "MDU6SXNzdWUzNzg1ODIzNjE=",
+      "title": "Consider adding vendor page URI to the JSON",
+      "url": "https://github.com/capport-wg/api/issues/20",
+      "state": "CLOSED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We should look at adding to the base API document a JSON key to specify a URI for a vendor info page (store info, maps, entertainment, etc)",
+      "createdAt": "2018-11-08T05:15:47Z",
+      "updatedAt": "2019-06-11T20:18:12Z",
+      "closedAt": "2019-03-27T10:45:31Z",
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "NONE",
+          "body": "Is vendor the right name here?  That kinda sounds like it's a Cisco or Aruba -inspired web page.\r\n\r\nDid \"venue-info-url\" or \"network-specific-info-url\" get evaluated and rejected already?",
+          "createdAt": "2019-06-11T19:40:47Z",
+          "updatedAt": "2019-06-11T19:40:47Z"
+        },
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "if you prefer a better name, suggest away. I just put it to start with. We wanted to make it somewhat generic like in case of an airplane wifi, it would be the status page for your flight/entertainment etc. \r\nIf folks like \"venue-info-url\" better, we'll do that.",
+          "createdAt": "2019-06-11T20:18:12Z",
+          "updatedAt": "2019-06-11T20:18:12Z"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "MDU6SXNzdWU0MjU2NDMwMTc=",
+      "title": "JSON URL reference is obsolete",
+      "url": "https://github.com/capport-wg/api/issues/21",
+      "state": "CLOSED",
+      "author": "ekline",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The updated reference should be, I believe, https://tools.ietf.org/html/rfc8259  .",
+      "createdAt": "2019-03-26T20:51:44Z",
+      "updatedAt": "2019-03-27T10:57:27Z",
+      "closedAt": "2019-03-27T10:57:26Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Updated, thank you!",
+          "createdAt": "2019-03-27T10:57:26Z",
+          "updatedAt": "2019-03-27T10:57:26Z"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "MDU6SXNzdWU0MjU2ODIyMDQ=",
+      "title": "Remove references to ICMP and use generic \"signals\"",
+      "url": "https://github.com/capport-wg/api/issues/22",
+      "state": "CLOSED",
+      "author": "darshakthakore",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Specifically in Section 3, \"enforcement\" section.",
+      "createdAt": "2019-03-26T22:46:45Z",
+      "updatedAt": "2019-03-27T11:17:29Z",
+      "closedAt": "2019-03-27T11:17:29Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Addressed in 4d2070cafcfea1148ff6fb4c3046fb60cbfdb318",
+          "createdAt": "2019-03-27T11:17:29Z",
+          "updatedAt": "2019-03-27T11:17:29Z"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "id": "MDU6SXNzdWU0MjU4ODkzOTk=",
+      "title": "Define a mechanism for organization-specific extension",
+      "url": "https://github.com/capport-wg/api/issues/23",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [
+        "design"
+      ],
+      "body": "Should we define an IANA registry for adding new keys?",
+      "createdAt": "2019-03-27T10:52:51Z",
+      "updatedAt": "2020-03-31T21:50:01Z",
+      "closedAt": "2020-03-31T21:50:01Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, yes we should.",
+          "createdAt": "2019-03-27T10:53:31Z",
+          "updatedAt": "2019-03-27T10:53:31Z"
+        },
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "and i already commented in the PR,  but if possible it would be beneficial to have some distinction between IETF or a relevant organization (like WFA, WBA) requested keys vs from some individual organization",
+          "createdAt": "2019-04-03T22:10:40Z",
+          "updatedAt": "2019-04-03T22:10:40Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Would we want to suggest having a nested dictionary format for organization-specific extensions? Like \"wba\" as a key to a dictionary; or a sub-dictionary indicating that there are WISPr-related settings to be aware of?",
+          "createdAt": "2019-12-06T22:38:49Z",
+          "updatedAt": "2019-12-06T22:38:49Z"
+        },
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "i think it would be a good idea. We have seen WBA start to take active interest in the documents. Also there's work happening in WFA that could benefit from having an extension point",
+          "createdAt": "2019-12-07T10:40:09Z",
+          "updatedAt": "2019-12-07T10:40:09Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "RFC 6648 might suggest otherwise. If there are things that a group wants to add that are truly unique to that group, this is probably fine.",
+          "createdAt": "2019-12-07T22:08:37Z",
+          "updatedAt": "2019-12-07T22:08:37Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, I think that more than having per-group keys (with almost certain overlap), I'd imagine that compatibility with certain technologies would be handled via these sub-dictionaries, such as what I mentioned for WISPr. Not sure how critical mentioning this is in the document though.",
+          "createdAt": "2019-12-08T22:28:46Z",
+          "updatedAt": "2019-12-08T22:28:46Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Can we call this one done?",
+          "createdAt": "2020-03-05T06:43:25Z",
+          "updatedAt": "2020-03-05T06:43:25Z"
+        },
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'm assuming we will go down the path of defining an IANA registry with access technology specific extension ? ",
+          "createdAt": "2020-03-05T22:53:42Z",
+          "updatedAt": "2020-03-05T22:53:42Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The description in \"Captive Portal API Keys Registry\" gives some guidance for prefixes, etc. I assume the experts once designated can work with WFA/WBA to define proper entries.",
+          "createdAt": "2020-03-31T21:50:00Z",
+          "updatedAt": "2020-03-31T21:50:00Z"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "id": "MDU6SXNzdWU0Mjc4MjQ3NDQ=",
+      "title": "suggest renaming vendor-info-url to location- or venue-",
+      "url": "https://github.com/capport-wg/api/issues/25",
+      "state": "CLOSED",
+      "author": "wlanmac",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "'vendor' can mean lots of things ... e.g. Cisco or Ruckus.",
+      "createdAt": "2019-04-01T17:27:19Z",
+      "updatedAt": "2019-07-02T19:49:12Z",
+      "closedAt": "2019-07-02T19:49:12Z",
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "NONE",
+          "body": "This is a good point.  vendor-url-info sounds like it might point to a web page about the portal vendor (operator) or the vendor of the network gear used by the enforcement point.\r\n\r\nNot to start a bikeshed, but +1 to \"venue-info-url\".",
+          "createdAt": "2019-04-01T18:30:59Z",
+          "updatedAt": "2019-04-01T18:30:59Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Switched to venue-information-url in 966a348c1f853a022b565ade66eb29fbb0cdab6b",
+          "createdAt": "2019-07-02T19:49:09Z",
+          "updatedAt": "2019-07-02T19:49:09Z"
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "id": "MDU6SXNzdWU1MjUzNjMxNzA=",
+      "title": "Define seconds remaining",
+      "url": "https://github.com/capport-wg/api/issues/27",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "The draft currently specifies a deadline as an absolute time.  Experience with implementation showed that time remaining (in seconds) was easier to implement and less subject to the vagaries of clock differences.",
+      "createdAt": "2019-11-20T01:26:49Z",
+      "updatedAt": "2019-12-06T22:37:02Z",
+      "closedAt": "2019-12-06T22:37:02Z",
+      "comments": []
+    },
+    {
+      "number": 28,
+      "id": "MDU6SXNzdWU1MjUzNjM0NTQ=",
+      "title": "Be more precise about bytes remaining",
+      "url": "https://github.com/capport-wg/api/issues/28",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "We identified a need to be clearer here that the value counted as both up and down (added together) and that we needed to explicitly say that the count includes the IP packet header.",
+      "createdAt": "2019-11-20T01:27:49Z",
+      "updatedAt": "2020-03-31T21:47:59Z",
+      "closedAt": "2020-03-31T21:47:58Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The current text is this:\r\n\r\n```\r\n- \"bytes-remaining\" (optional, integer): indicates the number of bytes remaining, after which the\r\nclient will be in placed into a captive state. The byte count represents the total number of IP packet\r\n(layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to\r\nwhitelisted servers, such as the API server, but clients cannot rely on such behavior.\r\n```\r\n\r\nIs there something better you recommend?",
+          "createdAt": "2019-12-02T22:19:58Z",
+          "updatedAt": "2019-12-02T22:20:28Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think we can close this based on recent updates/clarifications.",
+          "createdAt": "2020-03-31T21:47:58Z",
+          "updatedAt": "2020-03-31T21:47:58Z"
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "MDU6SXNzdWU1Mzg3NTY1MjU=",
+      "title": "expire-date -> seconds-remaining",
+      "url": "https://github.com/capport-wg/api/issues/30",
+      "state": "CLOSED",
+      "author": "liucougar",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "As discussed in the IETF hackathon/informal meeting, the consensus is to change expire-date (an absolute iso datetime) to seconds-remaining integer (named after bytes-remaining)\r\n",
+      "createdAt": "2019-12-17T00:22:17Z",
+      "updatedAt": "2019-12-17T07:08:24Z",
+      "closedAt": "2019-12-17T00:36:16Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This was already done! #29 ",
+          "createdAt": "2019-12-17T00:35:59Z",
+          "updatedAt": "2019-12-17T00:35:59Z"
+        },
+        {
+          "author": "liucougar",
+          "authorAssociation": "NONE",
+          "body": "thanks, missed that",
+          "createdAt": "2019-12-17T07:08:24Z",
+          "updatedAt": "2019-12-17T07:08:24Z"
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "MDU6SXNzdWU1NTE1MjQ5MTM=",
+      "title": "Add an key to indicate that sessions can be extended",
+      "url": "https://github.com/capport-wg/api/issues/31",
+      "state": "CLOSED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [
+        "design"
+      ],
+      "body": "Boolean value to add. Suggested names have been `remediation-supported` and `can-extend-session`.",
+      "createdAt": "2020-01-17T16:53:39Z",
+      "updatedAt": "2020-02-04T18:26:00Z",
+      "closedAt": "2020-02-04T18:26:00Z",
+      "comments": []
+    },
+    {
+      "number": 33,
+      "id": "MDU6SXNzdWU1Nzc0MDU4OTY=",
+      "title": "Give some guidance about cache configuration",
+      "url": "https://github.com/capport-wg/api/issues/33",
+      "state": "CLOSED",
+      "author": "dcdolson",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "The example says `Cache-Control: private` but there are no paragraph statements about what policy should be used.\r\nI think we want caching disabled, since the result may change with each GET.",
+      "createdAt": "2020-03-07T21:50:26Z",
+      "updatedAt": "2020-03-31T21:47:25Z",
+      "closedAt": "2020-03-31T21:47:25Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Agreed!",
+          "createdAt": "2020-03-18T01:28:54Z",
+          "updatedAt": "2020-03-18T01:28:54Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added via https://github.com/capport-wg/api/commit/477e7cc1c2f82c68e221c466b9ac44548e238fc0",
+          "createdAt": "2020-03-31T21:47:25Z",
+          "updatedAt": "2020-03-31T21:47:25Z"
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "id": "MDU6SXNzdWU1Nzc0MDYwODQ=",
+      "title": "How does the server identify the user?",
+      "url": "https://github.com/capport-wg/api/issues/34",
+      "state": "CLOSED",
+      "author": "dcdolson",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "I know there has been a lot of discussion about User Equipment Identity, and I'm not sure what the conclusions are, but I think this API document needs to explain how it must work.",
+      "createdAt": "2020-03-07T21:52:03Z",
+      "updatedAt": "2020-03-31T21:47:11Z",
+      "closedAt": "2020-03-31T21:47:11Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, and we should reference the architecture section 3 on this. ",
+          "createdAt": "2020-03-18T01:28:30Z",
+          "updatedAt": "2020-03-18T01:28:30Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added via https://github.com/capport-wg/api/commit/477e7cc1c2f82c68e221c466b9ac44548e238fc0",
+          "createdAt": "2020-03-31T21:47:11Z",
+          "updatedAt": "2020-03-31T21:47:11Z"
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "MDU6SXNzdWU1Nzc0MDc3MjQ=",
+      "title": "The example should say HTTPS vs HTTP",
+      "url": "https://github.com/capport-wg/api/issues/35",
+      "state": "CLOSED",
+      "author": "dcdolson",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "ORIGINAL:\r\n\"... a client sends an HTTP GET request.\"\r\n\r\nPROPOSED:\r\n\"... a client sends an HTTPS GET request.\"\r\n",
+      "createdAt": "2020-03-07T22:05:49Z",
+      "updatedAt": "2020-03-18T18:44:46Z",
+      "closedAt": "2020-03-18T18:44:46Z",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Not sure this is the right thing to do. A GET request is part of the HTTP protocol, which is the same whether you run it over TLS or not. https is a different scheme, and we do require running on TLS, but for specifying the content of requests and responses, I\u2019d rather just refer to HTTP. \n\nThoughts?",
+          "createdAt": "2020-03-18T01:25:20Z",
+          "updatedAt": "2020-03-18T01:25:20Z"
+        },
+        {
+          "author": "dcdolson",
+          "authorAssociation": "NONE",
+          "body": "I buy that. Because elsewhere I think it says the encryption is required I assumed this was an oversight.",
+          "createdAt": "2020-03-18T02:02:07Z",
+          "updatedAt": "2020-03-18T02:02:07Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Okay, if it's okay I'll close this one out.",
+          "createdAt": "2020-03-18T18:44:46Z",
+          "updatedAt": "2020-03-18T18:44:46Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTU1MjM4NDIz",
+      "title": "Setup repository for CI",
+      "url": "https://github.com/capport-wg/api/pull/1",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Using the latest files should ensure that this runs smoothly.",
+      "createdAt": "2017-11-29T03:02:10Z",
+      "updatedAt": "2017-11-29T03:05:31Z",
+      "closedAt": "2017-11-29T03:05:31Z",
+      "mergedAt": "2017-11-29T03:05:31Z",
+      "mergedBy": "tfpauly",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Looks good!",
+          "createdAt": "2017-11-29T03:05:27Z",
+          "updatedAt": "2017-11-29T03:05:27Z"
+        }
+      ],
+      "reviews": [],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "35c975bd9ab1457e94114814d95c24dd430fa564",
+      "headRepository": "capport-wg/api",
+      "headRefName": "ci-setup",
+      "headRefOid": "98738423ffd9a13e6c9160b1e54eeedf996755b2",
+      "mergeCommit": {
+        "oid": "e64466a5835830d192a50dd0e08de5ef7af2fbf6"
+      }
+    },
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTU2MTExNDAy",
+      "title": "Fix examples",
+      "url": "https://github.com/capport-wg/api/pull/5",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Add two CRLF at the end of headers\r\nAdd Date header field\r\nAdd Cache-Control header field\r\nAdd slashes to URL",
+      "createdAt": "2017-12-04T05:09:44Z",
+      "updatedAt": "2017-12-04T20:42:04Z",
+      "closedAt": "2017-12-04T20:42:04Z",
+      "mergedAt": "2017-12-04T20:42:04Z",
+      "mergedBy": "tfpauly",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3ODA5ODE5Njg=",
+          "commit": {
+            "abbreviatedOid": "6274fbe"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2017-12-04T20:41:56Z",
+          "updatedAt": "2017-12-04T20:41:56Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "e64466a5835830d192a50dd0e08de5ef7af2fbf6",
+      "headRepository": "capport-wg/api",
+      "headRefName": "fix-example",
+      "headRefOid": "6274fbe445f647185918800e2e141055c28a8ec5",
+      "mergeCommit": {
+        "oid": "6982be44a31f77b5f38c25de39319cb14670f0aa"
+      }
+    },
+    {
+      "number": 6,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTY2OTE0NjA2",
+      "title": "Editorial changes, removed well-known language",
+      "url": "https://github.com/capport-wg/api/pull/6",
+      "state": "MERGED",
+      "author": "darshakthakore",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Removed language for /.well-known URI. Made serving over port 443 a SHOULD requirement. \r\nOther editorial changes",
+      "createdAt": "2018-02-02T22:07:00Z",
+      "updatedAt": "2018-02-03T03:14:08Z",
+      "closedAt": "2018-02-03T03:14:08Z",
+      "mergedAt": "2018-02-03T03:14:07Z",
+      "mergedBy": "darshakthakore",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added your updated language, should be good to go.",
+          "createdAt": "2018-02-03T02:48:03Z",
+          "updatedAt": "2018-02-03T02:48:03Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3OTM3OTkzMTk=",
+          "commit": {
+            "abbreviatedOid": "2dba4ba"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Looks good, just one comment!",
+          "createdAt": "2018-02-03T01:11:24Z",
+          "updatedAt": "2018-02-03T01:12:33Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "When you say it won't be the \"same each time\", is \"each time\" referring to re-associating with the same network? It would be good to clarify. Perhaps:\r\n\r\n```\r\nThe host SHOULD NOT assume that the URI for a given network attachment will stay the same, and should rely on the discovery or provisioning process each time it joins the network.\r\n```",
+              "createdAt": "2018-02-03T01:11:24Z",
+              "updatedAt": "2018-02-03T02:45:25Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3OTM4MDQxNDA=",
+          "commit": {
+            "abbreviatedOid": "2dba4ba"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-02-03T02:38:14Z",
+          "updatedAt": "2018-02-03T02:38:14Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "thanks, i struggled with that one a bit and i like the language you proposed.",
+              "createdAt": "2018-02-03T02:38:14Z",
+              "updatedAt": "2018-02-03T02:45:25Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3OTM4MDUyNjE=",
+          "commit": {
+            "abbreviatedOid": "8ee61f6"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2018-02-03T03:14:03Z",
+          "updatedAt": "2018-02-03T03:14:03Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "6982be44a31f77b5f38c25de39319cb14670f0aa",
+      "headRepository": "darshakthakore/api",
+      "headRefName": "downstream/master",
+      "headRefOid": "8ee61f643a339a02504ae231c6cad96bcd79046a",
+      "mergeCommit": {
+        "oid": "8930a05073dd9ef5368bffa0db8cb99e9b240a2e"
+      }
+    },
+    {
+      "number": 12,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTk2ODU5MTc2",
+      "title": "Remove hmac key references",
+      "url": "https://github.com/capport-wg/api/pull/12",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Satisfies #4 ",
+      "createdAt": "2018-06-22T22:31:39Z",
+      "updatedAt": "2018-06-25T22:55:11Z",
+      "closedAt": "2018-06-25T22:53:45Z",
+      "mergedAt": "2018-06-25T22:53:45Z",
+      "mergedBy": "darshakthakore",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "looks good.",
+          "createdAt": "2018-06-25T22:53:38Z",
+          "updatedAt": "2018-06-25T22:53:38Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxODEzMzU1",
+          "commit": {
+            "abbreviatedOid": "32d1495"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "accepted",
+          "createdAt": "2018-06-25T22:55:11Z",
+          "updatedAt": "2018-06-25T22:55:11Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "8930a05073dd9ef5368bffa0db8cb99e9b240a2e",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/remove-hmac",
+      "headRefOid": "32d14953b5434f86b7f86fe56b093a294073edd3",
+      "mergeCommit": {
+        "oid": "0ec5d45db17e42118975bf23d2fd9956c351bd25"
+      }
+    },
+    {
+      "number": 13,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTk2ODYwOTE0",
+      "title": "Add media type registration",
+      "url": "https://github.com/capport-wg/api/pull/13",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Satisfied #9 ",
+      "createdAt": "2018-06-22T22:45:01Z",
+      "updatedAt": "2018-06-27T14:44:03Z",
+      "closedAt": "2018-06-27T14:44:03Z",
+      "mergedAt": "2018-06-27T14:44:03Z",
+      "mergedBy": "darshakthakore",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxMzgzMzU0",
+          "commit": {
+            "abbreviatedOid": "e4c3930"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-06-23T03:33:58Z",
+          "updatedAt": "2018-06-23T03:34:08Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "You might have more luck with formatting like:\r\n\r\n```\r\nlabel:\r\n\r\n: value\r\n\r\nlabel:\r\n\r\n: value\r\n```\r\n\r\nI find that to be the best way to do these lists.",
+              "createdAt": "2018-06-23T03:33:58Z",
+              "updatedAt": "2018-06-26T17:19:21Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxNDA5NjM2",
+          "commit": {
+            "abbreviatedOid": "ef50d7d"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-06-24T01:50:43Z",
+          "updatedAt": "2018-06-24T01:50:43Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "Ah, thanks! Updated.",
+              "createdAt": "2018-06-24T01:50:43Z",
+              "updatedAt": "2018-06-26T17:19:21Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxNDY2NDU3",
+          "commit": {
+            "abbreviatedOid": "ef50d7d"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-06-25T04:44:33Z",
+          "updatedAt": "2018-06-25T04:44:34Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "s/SHOULD// - no need to use the wishy-washy-est 2119 language here",
+              "createdAt": "2018-06-25T04:44:34Z",
+              "updatedAt": "2018-06-26T17:19:21Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxODE2MTkz",
+          "commit": {
+            "abbreviatedOid": "ef50d7d"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-06-25T23:07:54Z",
+          "updatedAt": "2018-06-25T23:07:54Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "the sentence is reading a bit \"incomplete\" without a shall or should. Also, does it make sense to use a shall/must for the server. i.e a server sending this must set the content type and send this content type. ",
+              "createdAt": "2018-06-25T23:07:54Z",
+              "updatedAt": "2018-06-26T17:19:21Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMyMTIyNzIx",
+          "commit": {
+            "abbreviatedOid": "5931358"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2018-06-26T17:20:07Z",
+          "updatedAt": "2018-06-26T17:20:07Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Okay, added a sentence to clarify the client SHOULD and server MUST.",
+              "createdAt": "2018-06-26T17:20:07Z",
+              "updatedAt": "2018-06-26T17:20:07Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxODE3Njkx",
+          "commit": {
+            "abbreviatedOid": "f7631c6"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "I am ok with the added text.",
+          "createdAt": "2018-06-25T23:15:56Z",
+          "updatedAt": "2018-06-27T14:43:43Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Maybe we can say..\r\nClients making a request to the Captive Portal API server can use the \"application/captive+json\" media type and Servers responding with the data structure specified below shall/must (?) include this in the Content-Type header of the response.",
+              "createdAt": "2018-06-25T23:15:56Z",
+              "updatedAt": "2018-06-27T14:43:43Z"
+            }
+          ]
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "8930a05073dd9ef5368bffa0db8cb99e9b240a2e",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/media-type",
+      "headRefOid": "5931358e8f6358ecb5c99336031e21898f5e21a0",
+      "mergeCommit": {
+        "oid": "55cb00380bbc54050ce6d522fd78709754c50506"
+      }
+    },
+    {
+      "number": 14,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTk2OTI5NTk3",
+      "title": "Add section on server authentication",
+      "url": "https://github.com/capport-wg/api/pull/14",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Addresses #7, with the decisions made at the last IETF meeting",
+      "createdAt": "2018-06-24T02:43:39Z",
+      "updatedAt": "2018-06-27T14:51:08Z",
+      "closedAt": "2018-06-27T14:51:08Z",
+      "mergedAt": "2018-06-27T14:51:08Z",
+      "mergedBy": "darshakthakore",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Added text based on Martin's suggestions",
+          "createdAt": "2018-06-26T17:45:44Z",
+          "updatedAt": "2018-06-26T17:45:44Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMxNDQxMjQz",
+          "commit": {
+            "abbreviatedOid": "8094610"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "This needs to mention AIA chasing as well.  Some client implementations do that (others think that it's a crazy idea, but that's not a debate we need to enter into here).",
+          "createdAt": "2018-06-24T23:51:39Z",
+          "updatedAt": "2018-06-24T23:55:09Z",
+          "comments": [
+            {
+              "originalPosition": 26,
+              "body": "I don't know how much 5019 is implemented in clients.  Limiting the whitelist in this way might cause this to not work.  (typo on lightweight, btw)",
+              "createdAt": "2018-06-24T23:51:39Z",
+              "updatedAt": "2018-06-26T17:44:13Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "This will get comments asking why OCSPv2 isn't listed here.  The answer is simple: it's not implemented. :)",
+              "createdAt": "2018-06-24T23:52:25Z",
+              "updatedAt": "2018-06-26T17:44:13Z"
+            },
+            {
+              "originalPosition": 23,
+              "body": "I'm trying to understand why the SHOULD is needed here.  Specifically, why you might choose not to validate.\r\n\r\nRather than recommend the use of OCSP, it might be better to say \"if the client uses OCSP, either the responder needs to be accessible or the server needs to use OCSP stapling\".  Maybe concentrate on stapling, since that is what we consider to be best practice (and it's easier to get right in this context).",
+              "createdAt": "2018-06-24T23:54:35Z",
+              "updatedAt": "2018-06-26T17:44:13Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MTMyNDY5MjM2",
+          "commit": {
+            "abbreviatedOid": "24ed5da"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "looks good.",
+          "createdAt": "2018-06-27T14:50:57Z",
+          "updatedAt": "2018-06-27T14:50:57Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "8930a05073dd9ef5368bffa0db8cb99e9b240a2e",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/server-authentication",
+      "headRefOid": "24ed5da177423dd5111cc8c853ea82d43cd9d5e2",
+      "mergeCommit": {
+        "oid": "397bdfa4ac79e5d09496a979c7a714a6c1033bcb"
+      }
+    },
+    {
+      "number": 24,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjY2MDA2MzI1",
+      "title": "Define a registry for JSON keys in capport API",
+      "url": "https://github.com/capport-wg/api/pull/24",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "As discussed in #23, define an IANA registry for extending JSON keys use for Captive Portal API.",
+      "createdAt": "2019-03-31T11:20:00Z",
+      "updatedAt": "2019-04-24T15:17:52Z",
+      "closedAt": "2019-04-24T15:17:52Z",
+      "mergedAt": "2019-04-24T15:17:52Z",
+      "mergedBy": "tfpauly",
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@martinthomson @darshakthakore thanks for the comments. Please take another pass!",
+          "createdAt": "2019-04-16T00:32:37Z",
+          "updatedAt": "2019-04-16T00:32:37Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIwODY2NjE3",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-03-31T14:24:43Z",
+          "updatedAt": "2019-03-31T15:00:14Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "```suggestion\r\n- \"vendor-info-url\" (optional, string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).\r\n```",
+              "createdAt": "2019-03-31T14:24:44Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            },
+            {
+              "originalPosition": 4,
+              "body": "Drop this and use `{{!RFC8126}}` below.  I find it easier to manage references that way.",
+              "createdAt": "2019-03-31T14:25:24Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            },
+            {
+              "originalPosition": 66,
+              "body": "You should provide advice to the expert.  I think that the only advice we need to give is similar to that in RFC 8447, namely \"don't let someone spam the registry\". Which raises the question: do we want to distinguish between \"sanctioned\" values (these and any the IETF might produce) and random un-vetted stuff that anyone can add?",
+              "createdAt": "2019-03-31T14:27:11Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            },
+            {
+              "originalPosition": 40,
+              "body": "I was taught to avoid creating empty sections.\r\n\r\n```suggestion\r\n# IANA Considerations {#iana-section}\r\n\r\nIANA is requested to create a registration for an \"application/captive+json\" media type ({{iana-json}}) and a registry for fields in that format ({{iana-field-reg}}).\r\n\r\n```",
+              "createdAt": "2019-03-31T14:29:06Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIyNDc3NjYy",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-03T22:06:55Z",
+          "updatedAt": "2019-04-03T22:06:55Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "i think it might be worthwhile to have that distinction. In fact, based on some discussions i've had with WFA, they may want to add some WFA specific key/value which could be considered \"more authoritative\" than values requested by some individual organization.",
+              "createdAt": "2019-04-03T22:06:55Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIyNDc3OTMx",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-03T22:07:41Z",
+          "updatedAt": "2019-04-03T22:07:41Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "are we sure that the user-poral-url should be made \"optional\" ?",
+              "createdAt": "2019-04-03T22:07:41Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIyNjA1MDk3",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-04T07:55:50Z",
+          "updatedAt": "2019-04-04T07:55:50Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "As @martinthomson had mentioned in his issue for this, it might make the portal a bit useless for now, but if we're thinking about the future with extensibility, locking ourselves into this key for all use cases doesn't seem like a great idea.",
+              "createdAt": "2019-04-04T07:55:50Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIzMjM4OTU5",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-05T12:13:13Z",
+          "updatedAt": "2019-04-05T12:13:14Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Does the `!` imply a normative reference?",
+              "createdAt": "2019-04-05T12:13:13Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjIzNjIxODgz",
+          "commit": {
+            "abbreviatedOid": "45ea1aa"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-08T02:19:44Z",
+          "updatedAt": "2019-04-08T02:19:45Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Yes, you can even cite `{{!RFC8126}}` as normative and `{{?RFC8126}}` as informative as appropriate to the context and the tools will promote the reference to normative if there are any `!` references.",
+              "createdAt": "2019-04-08T02:19:44Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjI2OTM4OTQ0",
+          "commit": {
+            "abbreviatedOid": "5477fff"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-16T00:31:43Z",
+          "updatedAt": "2019-04-16T00:31:43Z",
+          "comments": [
+            {
+              "originalPosition": 29,
+              "body": "Updated",
+              "createdAt": "2019-04-16T00:31:43Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjI2OTM4OTcw",
+          "commit": {
+            "abbreviatedOid": "5477fff"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-16T00:31:52Z",
+          "updatedAt": "2019-04-16T00:31:52Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Fixed throughout",
+              "createdAt": "2019-04-16T00:31:52Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjI2OTM5MDIx",
+          "commit": {
+            "abbreviatedOid": "5477fff"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-16T00:32:07Z",
+          "updatedAt": "2019-04-16T00:32:07Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "Added some text giving expert guidance",
+              "createdAt": "2019-04-16T00:32:07Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjI2OTM5MDYw",
+          "commit": {
+            "abbreviatedOid": "5477fff"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-04-16T00:32:17Z",
+          "updatedAt": "2019-04-16T00:32:17Z",
+          "comments": [
+            {
+              "originalPosition": 40,
+              "body": "Good call. Fixed!",
+              "createdAt": "2019-04-16T00:32:17Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjI5OTA2MzY3",
+          "commit": {
+            "abbreviatedOid": "5477fff"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-04-24T05:37:40Z",
+          "updatedAt": "2019-04-24T05:40:49Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "It gets better here:  You can use `{{?ARCH=I-D.ietf...}}` here and then `{{?ARCH}}` everywhere else.  The symbolic references are much nicer than opaque RFC references for most people.",
+              "createdAt": "2019-04-24T05:37:40Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            },
+            {
+              "originalPosition": 111,
+              "body": "```suggestion\r\nThe Designated Expert is expected to validate the existence of documentation describing new keys in a permanent\r\n```",
+              "createdAt": "2019-04-24T05:38:57Z",
+              "updatedAt": "2019-04-24T15:12:31Z"
+            }
+          ]
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "54d03ddd68076fb2414e8cbbc099a610372efbab",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/keyregistry",
+      "headRefOid": "5d1651941bf60acae6aa631092cf080d0d52a145",
+      "mergeCommit": {
+        "oid": "c812657b83622b45bd66112e6e3a37217e88b0e3"
+      }
+    },
+    {
+      "number": 26,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjkzOTAxNDA2",
+      "title": "Add security considerations section",
+      "url": "https://github.com/capport-wg/api/pull/26",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [
+        "tfpauly"
+      ],
+      "labels": [],
+      "body": "Adding a security considerations section to describe the security benefits that are added, along with the concern about trusting any hostnames even after authentication.\r\n\r\nI'd like to get some form of this in soon, and then rev the document before the IETF 105 cutoff.",
+      "createdAt": "2019-07-02T20:20:53Z",
+      "updatedAt": "2019-07-07T01:30:47Z",
+      "closedAt": "2019-07-07T01:30:47Z",
+      "mergedAt": "2019-07-07T01:30:47Z",
+      "mergedBy": "tfpauly",
+      "comments": [
+        {
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "thanks for starting this. looks like a good text to start with. Should we also propose something to the privacy section ?",
+          "createdAt": "2019-07-02T20:24:31Z",
+          "updatedAt": "2019-07-02T20:24:31Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We have a bit in the privacy section already, so I was going to leave it for now. If you have suggested text, let me know and I\u2019ll add it!",
+          "createdAt": "2019-07-03T03:44:11Z",
+          "updatedAt": "2019-07-03T03:44:11Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjU3MjU1MzU5",
+          "commit": {
+            "abbreviatedOid": "1d94cf4"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-07-03T04:30:22Z",
+          "updatedAt": "2019-07-03T04:38:47Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "Two minor typos:\r\n```suggestion\r\nIn addition to encrypting communications between clients and Captive Portal systems, this protocol requires a basic level of authentication from the API server, as described in {{server-auth}}. Specifically, the API server MUST present a valid certificate on which the client can perform revocation checks. This allows the client to ensure that the API server has authority for a hostname that can be presented to a user. This hostname MUST be presented to the user when associating with the Captive Portal, in order to benefit from the authentication check.\r\n```\r\n\r\nI don't know about the last \"MUST\" here.  The name comes from an unauthenticated source, so the value in presenting that information is not that great.  That doesn't mean that it couldn't be used, but to require that it be is probably going too far.",
+              "createdAt": "2019-07-03T04:30:22Z",
+              "updatedAt": "2019-07-03T15:42:58Z"
+            },
+            {
+              "originalPosition": 18,
+              "body": "This bit is challenging.  I would hesitate to recommend any specific response here.  Specificity might encourage simplistic responses that could be easily circumvented, or it might discourage the seeking of alternative and superior approaches.  It is enough to highlight the fact that the name offered by the network might be constructed in a way as to confuse recipients about identity.\r\n\r\nFor me, I would prefer not to present these names directly (in contradiction to the previous paragraph) on the basis that they are not relevant to user activities, except in support of other features.  For instance, rendering the info page in a web view might be done without offering the name of the server.  But that's something for designers to grapple with; all you need to do is help them understand the properties of the system.",
+              "createdAt": "2019-07-03T04:38:41Z",
+              "updatedAt": "2019-07-03T15:42:58Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjU3NTc4NTkz",
+          "commit": {
+            "abbreviatedOid": "91ef6ec"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-07-03T15:43:06Z",
+          "updatedAt": "2019-07-03T15:43:07Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "Fixed the typos! Also, removed the sentence with the MUST.",
+              "createdAt": "2019-07-03T15:43:06Z",
+              "updatedAt": "2019-07-03T15:43:07Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MjU3NTc4OTY5",
+          "commit": {
+            "abbreviatedOid": "91ef6ec"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-07-03T15:43:40Z",
+          "updatedAt": "2019-07-03T15:43:40Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "That's a fair point; for now, I've just removed the suggested mitigation and left the consideration that the name itself may be bogus.",
+              "createdAt": "2019-07-03T15:43:40Z",
+              "updatedAt": "2019-07-03T15:43:40Z"
+            }
+          ]
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "966a348c1f853a022b565ade66eb29fbb0cdab6b",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/security-considerations",
+      "headRefOid": "91ef6ecaaf30e8c19637d25df5df75af984b441b",
+      "mergeCommit": {
+        "oid": "f391dbfb4773a59df982d7c123777383b7a71bbb"
+      }
+    },
+    {
+      "number": 29,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzQ4MDA3MDQ5",
+      "title": "Switch to seconds-remaining",
+      "url": "https://github.com/capport-wg/api/pull/29",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Completes #27",
+      "createdAt": "2019-12-02T22:18:07Z",
+      "updatedAt": "2019-12-06T22:36:49Z",
+      "closedAt": "2019-12-06T22:36:49Z",
+      "mergedAt": "2019-12-06T22:36:49Z",
+      "mergedBy": "tfpauly",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzI1Nzg1NjU2",
+          "commit": {
+            "abbreviatedOid": "838005c"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "just a suggestion: \r\n\"and SHOULD set the value to zero for captive clients.\"\r\n",
+          "createdAt": "2019-12-02T22:27:04Z",
+          "updatedAt": "2019-12-02T22:27:50Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "given that now its \"seconds remaining\", should  we state that the API  server SHOULD set this value to 0 if the client is captive to be more explicit ?",
+              "createdAt": "2019-12-02T22:27:04Z",
+              "updatedAt": "2019-12-02T22:27:50Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzI1ODAxNDU0",
+          "commit": {
+            "abbreviatedOid": "838005c"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-12-02T23:01:04Z",
+          "updatedAt": "2019-12-02T23:01:07Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I would have thought that omitting this would be better.",
+              "createdAt": "2019-12-02T23:01:04Z",
+              "updatedAt": "2019-12-02T23:01:07Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzI1ODE4MDQ5",
+          "commit": {
+            "abbreviatedOid": "838005c"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-12-02T23:45:51Z",
+          "updatedAt": "2019-12-02T23:45:52Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I think omitting is indeed more clear, as it already suggests.",
+              "createdAt": "2019-12-02T23:45:51Z",
+              "updatedAt": "2019-12-02T23:45:52Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzI1ODUzOTky",
+          "commit": {
+            "abbreviatedOid": "838005c"
+          },
+          "author": "darshakthakore",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-12-03T01:49:47Z",
+          "updatedAt": "2019-12-03T01:49:47Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "ok, that's fine too. My thought was having the value of zero is a more explicit indication given that its an optional field to begin with, however i don't have that strong feelings about it. If both of you think omitting is better, i'm good with it.",
+              "createdAt": "2019-12-03T01:49:47Z",
+              "updatedAt": "2019-12-03T01:49:47Z"
+            }
+          ]
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "f391dbfb4773a59df982d7c123777383b7a71bbb",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/seconds-remaining",
+      "headRefOid": "838005c5aaea5da392251225d6497533603de86e",
+      "mergeCommit": {
+        "oid": "a58bd56731ed01e32c94da3908ef0d5b952d056d"
+      }
+    },
+    {
+      "number": 32,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzY3NzExMzgw",
+      "title": "Add 'can-extend-session' key",
+      "url": "https://github.com/capport-wg/api/pull/32",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Add key for extending sessions. Implements #31.",
+      "createdAt": "2020-01-27T21:25:19Z",
+      "updatedAt": "2020-01-31T18:43:25Z",
+      "closedAt": "2020-01-31T18:43:24Z",
+      "mergedAt": "2020-01-31T18:43:24Z",
+      "mergedBy": "tfpauly",
+      "comments": [
+        {
+          "author": "mcr",
+          "authorAssociation": "NONE",
+          "body": "I want to be clear that there is no extend-session API here. It's just an indication that the user could do that somehow, in a browser.\r\n",
+          "createdAt": "2020-01-27T23:17:59Z",
+          "updatedAt": "2020-01-27T23:17:59Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@mcr correct, there's no specific API to do so. It just indicates if there's a possibility of the user doing so. Future mechanisms for doing so automatically are left for the future =)",
+          "createdAt": "2020-01-27T23:48:33Z",
+          "updatedAt": "2020-01-27T23:48:33Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ4OTg5Mjk2",
+          "commit": {
+            "abbreviatedOid": "512141b"
+          },
+          "author": "liucougar",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-01-27T21:31:51Z",
+          "updatedAt": "2020-01-27T21:34:09Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "typo: Thie",
+              "createdAt": "2020-01-27T21:31:51Z",
+              "updatedAt": "2020-01-27T23:09:12Z"
+            },
+            {
+              "originalPosition": 13,
+              "body": "should this be changed to seconds-remaining?",
+              "createdAt": "2020-01-27T21:32:52Z",
+              "updatedAt": "2020-01-27T23:09:12Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDM5NjMx",
+          "commit": {
+            "abbreviatedOid": "84f05a8"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-01-27T23:10:07Z",
+          "updatedAt": "2020-01-27T23:10:07Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Thanks, fixed!",
+              "createdAt": "2020-01-27T23:10:07Z",
+              "updatedAt": "2020-01-27T23:10:07Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDM5Njg0",
+          "commit": {
+            "abbreviatedOid": "84f05a8"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-01-27T23:10:16Z",
+          "updatedAt": "2020-01-27T23:10:16Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Good catch, fixed!",
+              "createdAt": "2020-01-27T23:10:16Z",
+              "updatedAt": "2020-01-27T23:10:16Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDQyMTYx",
+          "commit": {
+            "abbreviatedOid": "84f05a8"
+          },
+          "author": "mcr",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-01-27T23:16:11Z",
+          "updatedAt": "2020-01-27T23:16:11Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDQyNDAy",
+          "commit": {
+            "abbreviatedOid": "512141b"
+          },
+          "author": "mcr",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-01-27T23:16:44Z",
+          "updatedAt": "2020-01-27T23:16:45Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "s/Thie/This/",
+              "createdAt": "2020-01-27T23:16:44Z",
+              "updatedAt": "2020-01-27T23:16:45Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDUzNzU4",
+          "commit": {
+            "abbreviatedOid": "84f05a8"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-01-27T23:47:50Z",
+          "updatedAt": "2020-01-27T23:47:50Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "Yup, fixed =)",
+              "createdAt": "2020-01-27T23:47:50Z",
+              "updatedAt": "2020-01-27T23:47:50Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzQ5MDk2MDI4",
+          "commit": {
+            "abbreviatedOid": "84f05a8"
+          },
+          "author": "ekline",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "LGTM",
+          "createdAt": "2020-01-28T02:12:48Z",
+          "updatedAt": "2020-01-28T02:12:48Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "a58bd56731ed01e32c94da3908ef0d5b952d056d",
+      "headRepository": "capport-wg/api",
+      "headRefName": "tfp/extend-session",
+      "headRefOid": "84f05a843ca15eeeb8c0c36271f8bcdd7145b3e3",
+      "mergeCommit": {
+        "oid": "2868d8434b0ed1a047bd134dd003a0c7fc437376"
+      }
+    },
+    {
+      "number": 36,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzk2NzY5Mzc5",
+      "title": "Add shepherd writeup",
+      "url": "https://github.com/capport-wg/api/pull/36",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-04-01T05:30:07Z",
+      "updatedAt": "2020-04-20T23:05:30Z",
+      "closedAt": "2020-04-20T23:05:25Z",
+      "mergedAt": "2020-04-20T23:05:25Z",
+      "mergedBy": "martinthomson",
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mzg1NjEwOTky",
+          "commit": {
+            "abbreviatedOid": "a7e14b4"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-04-01T13:57:04Z",
+          "updatedAt": "2020-04-01T13:57:04Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "Since this has been sent, let's update this. Otherwise looks good.",
+              "createdAt": "2020-04-01T13:57:04Z",
+              "updatedAt": "2020-04-01T22:31:32Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mzg3NTk0MzA3",
+          "commit": {
+            "abbreviatedOid": "76396f2"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-04-03T21:34:26Z",
+          "updatedAt": "2020-04-03T21:34:26Z",
+          "comments": []
+        }
+      ],
+      "baseRepository": "capport-wg/api",
+      "baseRefName": "master",
+      "baseRefOid": "477e7cc1c2f82c68e221c466b9ac44548e238fc0",
+      "headRepository": "capport-wg/api",
+      "headRefName": "writeup",
+      "headRefOid": "76396f2d8b27dd01675d253c065fd8158bf9cc10",
+      "mergeCommit": {
+        "oid": "a029ee30251b1e7b6aa25318b5ab51734b4f802b"
+      }
+    }
+  ]
+}
