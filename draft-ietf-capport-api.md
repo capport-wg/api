@@ -97,7 +97,7 @@ The Captive Portal API data structures are specified in JavaScript Object Notati
 
 The following key MUST be included in the top-level of the JSON structure returned by the API server:
 
-- "captive" (boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it can still be allowed enough access for it to perform server authentication {{server-auth}}.
+- "captive" (boolean): indicates whether the client is in a state of captivity, i.e it has not satisfied the conditions to access the external network. If the client is captive (i.e. captive=true), it will still be allowed enough access for it to perform server authentication ({{server-auth}}).
 
 The following keys can be optionally included in the top-level of the JSON structure returned by the API server:
 
@@ -107,7 +107,7 @@ The following keys can be optionally included in the top-level of the JSON struc
 - "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not time-limited.
 - "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
 
-The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry {{iana-section}}. If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
+The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry ({{iana-section}}). If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
 # Example Interaction {#example}
 
