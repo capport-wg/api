@@ -75,7 +75,7 @@ The client SHOULD NOT assume that the URI for a given network attachment will st
 
 For example, if the Captive Portal API server is hosted at "example.org", the URI of the API could be "https://example.org/captive-portal/api"
 
-As described in Section 3 of {{?I-D.ietf-capport-architecture}}, the identity of the client needs to be visible to the Captive Portal API server in order for the server to correctly reply with the client's portal state. If the identifier used by the Captive Portal system is the client's IP address, the system needs to ensure that the same IP address is visible to both the API server and the enforcement device.
+As described in Section 3 of {{?I-D.ietf-capport-architecture}}, the identity of the client needs to be visible to the Captive Portal API server in order for the server to correctly reply with the client's portal state. If the identifier used by the Captive Portal system is the client's set of IP addresses, the system needs to ensure that the same IP addresses are visible to both the API server and the enforcement device.
 
 If the API server needs information about the client identity that is not otherwise visible to it, the URI provided to the client during provisioning can be distinct per client. Thus, depending on how the Captive Portal system is configured, the URI might be unique for each client host and between sessions for the same client host.
 
@@ -105,20 +105,20 @@ The following keys can be optionally included in the top-level of the JSON struc
 - "venue-info-url" (string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
 - "can-extend-session" (boolean): indicates that the URL specified as "user-portal-url" allows the user to extend a session once the client is no longer in a state of captivity. This provides a hint that a client system can suggest accessing the portal URL to the user when the session is near its limit in terms of time or bytes.
 - "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not time-limited.
-- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
+- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client, including IP headers. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
 
 The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry ({{iana-section}}). If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
 # Example Interaction {#example}
 
-A client connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity.
+A client connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity. In this example, the client discovered the URI "https://example.org/captive-portal/api/X54PD" using one of the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}.
+
 To request the Captive Portal JSON content, a client sends an HTTP GET request:
 
 ~~~~~~~~~~
 GET /captive-portal/api/X54PD
 Host: example.org
 Accept: application/captive+json
-
 ~~~~~~~~~~
 
 The server then responds with the JSON content for that client:
