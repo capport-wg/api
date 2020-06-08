@@ -174,8 +174,9 @@ Internet-Draft             Captive Portal API                  June 2020
    identity of the client needs to be visible to the Captive Portal API
    server in order for the server to correctly reply with the client's
    portal state.  If the identifier used by the Captive Portal system is
-   the client's IP address, the system needs to ensure that the same IP
-   address is visible to both the API server and the enforcement device.
+   the client's set of IP addresses, the system needs to ensure that the
+   same IP addresses are visible to both the API server and the
+   enforcement device.
 
    If the API server needs information about the client identity that is
    not otherwise visible to it, the URI provided to the client during
@@ -215,9 +216,8 @@ Internet-Draft             Captive Portal API                  June 2020
    [RFC5905] servers or other time-sync mechnisms to allow clients to
    accurately validate certificates.
 
-   Certificates with missing intermediate certificates that rely on
-   clients validating the certificate chain using the URI specified in
-   the Authority Information Access (AIA) extension [RFC5280] SHOULD NOT
+
+
 
 
 
@@ -226,6 +226,9 @@ Pauly & Thakore         Expires 10 December 2020                [Page 4]
 Internet-Draft             Captive Portal API                  June 2020
 
 
+   Certificates with missing intermediate certificates that rely on
+   clients validating the certificate chain using the URI specified in
+   the Authority Information Access (AIA) extension [RFC5280] SHOULD NOT
    be used by the Captive Portal API server.  If the certificates do
    require the use of AIA, the captive network MUST allow client access
    to the host specified in the URI.
@@ -274,9 +277,6 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-
-
-
 Pauly & Thakore         Expires 10 December 2020                [Page 5]
 
 Internet-Draft             Captive Portal API                  June 2020
@@ -292,13 +292,14 @@ Internet-Draft             Captive Portal API                  June 2020
    *  "bytes-remaining" (integer): indicates the number of bytes
       remaining, after which the client will be in placed into a captive
       state.  The byte count represents the sum of the total number of
-      IP packet (layer 3) bytes sent and received by the client.
-      Captive portal systems might not count traffic to whitelisted
-      servers, such as the API server, but clients cannot rely on such
-      behavior.  The API server SHOULD include this value if the client
-      is not captive (i.e. captive=false) and the client session is
-      byte-limited, and SHOULD omit this value for captive clients (i.e.
-      captive=true) or when the session is not byte-limited.
+      IP packet (layer 3) bytes sent and received by the client,
+      including IP headers.  Captive portal systems might not count
+      traffic to whitelisted servers, such as the API server, but
+      clients cannot rely on such behavior.  The API server SHOULD
+      include this value if the client is not captive (i.e.
+      captive=false) and the client session is byte-limited, and SHOULD
+      omit this value for captive clients (i.e. captive=true) or when
+      the session is not byte-limited.
 
    The valid JSON keys can be extended by adding entries to the Captive
    Portal API Keys Registry (Section 8).  If a client receives a key
@@ -310,15 +311,32 @@ Internet-Draft             Captive Portal API                  June 2020
 
    A client connected to a captive network upon discovering the URI of
    the API server will query the API server to retrieve information
-   about its captive state and conditions to escape captivity.  To
-   request the Captive Portal JSON content, a client sends an HTTP GET
-   request:
+   about its captive state and conditions to escape captivity.  In this
+   example, the client discovered the URI "https://example.org/captive-
+   portal/api/X54PD" using one of the mechanisms defined in
+   [I-D.ietf-capport-rfc7710bis].
+
+   To request the Captive Portal JSON content, a client sends an HTTP
+   GET request:
 
    GET /captive-portal/api/X54PD
    Host: example.org
    Accept: application/captive+json
 
    The server then responds with the JSON content for that client:
+
+
+
+
+
+
+
+
+
+Pauly & Thakore         Expires 10 December 2020                [Page 6]
+
+Internet-Draft             Captive Portal API                  June 2020
+
 
    HTTP/1.1 200 OK
    Cache-Control: private
@@ -329,14 +347,6 @@ Internet-Draft             Captive Portal API                  June 2020
       "captive": true,
       "user-portal-url": "https://example.org/portal.html"
    }
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 6]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    Upon receiving this information the client will use this information
    to direct the user to the the web portal (as specified by the user-
@@ -377,6 +387,13 @@ Internet-Draft             Captive Portal API                  June 2020
    communication between the clients and the API server MUST be
    encrypted.
 
+
+
+Pauly & Thakore         Expires 10 December 2020                [Page 7]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    In addition to encrypting communications between clients and Captive
    Portal systems, this protocol requires a basic level of
    authentication from the API server, as described in Section 4.1.
@@ -384,15 +401,6 @@ Internet-Draft             Captive Portal API                  June 2020
    which the client can perform revocation checks.  This allows the
    client to ensure that the API server has authority for a hostname
    that can be presented to a user.
-
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 7]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    It is important to note that while the server authentication checks
    can validate a specific hostname, it is certainly possible for the
@@ -434,6 +442,14 @@ Internet-Draft             Captive Portal API                  June 2020
 
    Security considerations: See Section 7
 
+
+
+
+Pauly & Thakore         Expires 10 December 2020                [Page 8]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    Interoperability considerations: This document specifies format of
    conforming messages and the interpretation thereof.
 
@@ -442,13 +458,6 @@ Internet-Draft             Captive Portal API                  June 2020
    Applications that use this media type: This media type is intended to
    be used by servers presenting the Captive Portal API, and clients
    connecting to such captive networks.
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 8]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    Fragment identifier considerations: N/A
 
@@ -489,15 +498,6 @@ Internet-Draft             Captive Portal API                  June 2020
    New assignments for Captive Portal API Keys Registry will be
    administered by IANA using the Specification Required policy
    [RFC8126].  The Designated Expert is expected to validate the
-   existence of documentation describing new keys in a permanent
-   publicly available specification.  The expert is expected to validate
-   that new keys have a clear meaning and do not create unnecessary
-   confusion or overlap with existing keys.  Keys that are specific to
-   non-generic use cases, particularly ones that are not specified as
-   part of an IETF document, are encouraged to use a domain-specific
-   prefix.
-
-
 
 
 
@@ -505,6 +505,14 @@ Pauly & Thakore         Expires 10 December 2020                [Page 9]
 
 Internet-Draft             Captive Portal API                  June 2020
 
+
+   existence of documentation describing new keys in a permanent
+   publicly available specification.  The expert is expected to validate
+   that new keys have a clear meaning and do not create unnecessary
+   confusion or overlap with existing keys.  Keys that are specific to
+   non-generic use cases, particularly ones that are not specified as
+   part of an IETF document, are encouraged to use a domain-specific
+   prefix.
 
 9.  Acknowledgments
 
@@ -547,20 +555,17 @@ Internet-Draft             Captive Portal API                  June 2020
               RFC 6960, DOI 10.17487/RFC6960, June 2013,
               <https://www.rfc-editor.org/info/rfc6960>.
 
-   [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
-              Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
-              RFC 7234, DOI 10.17487/RFC7234, June 2014,
-              <https://www.rfc-editor.org/info/rfc7234>.
-
-
-
-
 
 
 Pauly & Thakore         Expires 10 December 2020               [Page 10]
 
 Internet-Draft             Captive Portal API                  June 2020
 
+
+   [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
+              RFC 7234, DOI 10.17487/RFC7234, June 2014,
+              <https://www.rfc-editor.org/info/rfc7234>.
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
@@ -605,6 +610,14 @@ Authors' Addresses
    Darshak Thakore (editor)
    CableLabs
    858 Coal Creek Circle
+
+
+
+Pauly & Thakore         Expires 10 December 2020               [Page 11]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    Louisville, CO 80027,
    United States of America
 
@@ -613,4 +626,47 @@ Authors' Addresses
 
 
 
-Pauly & Thakore         Expires 10 December 2020               [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pauly & Thakore         Expires 10 December 2020               [Page 12]
