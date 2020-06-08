@@ -5,8 +5,8 @@
 Captive Portal Interaction                                 T. Pauly, Ed.
 Internet-Draft                                                Apple Inc.
 Intended status: Standards Track                         D. Thakore, Ed.
-Expires: 9 November 2020                                       CableLabs
-                                                              8 May 2020
+Expires: 10 December 2020                                      CableLabs
+                                                             8 June 2020
 
 
                            Captive Portal API
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 November 2020.
+   This Internet-Draft will expire on 10 December 2020.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 1]
+Pauly & Thakore         Expires 10 December 2020                [Page 1]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
 Table of Contents
@@ -94,7 +94,7 @@ Table of Contents
       captivity
 
    *  An encrypted connection (using TLS for connections to both the API
-      and user portal)
+      and user-facing web portal)
 
 2.  Terminology
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 2]
+Pauly & Thakore         Expires 10 December 2020                [Page 2]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    *  Captive Portal API Server: The server exposing the APIs defined in
@@ -165,9 +165,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 3]
+Pauly & Thakore         Expires 10 December 2020                [Page 3]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    As described in Section 3 of [I-D.ietf-capport-architecture], the
@@ -221,9 +221,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 4]
+Pauly & Thakore         Expires 10 December 2020                [Page 4]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    be used by the Captive Portal API server.  If the certificates do
@@ -235,7 +235,7 @@ Internet-Draft             Captive Portal API                   May 2020
    interaction described in this document.  The client will proceed to
    interact with the captive network as if the API capabilities were not
    present.  It may still be possible for the user to access the network
-   by being redirected to a web portal.
+   if the network redirects a cleartext webpage to a web portal.
 
 5.  API State Structure
 
@@ -277,9 +277,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 5]
+Pauly & Thakore         Expires 10 December 2020                [Page 5]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    *  "seconds-remaining" (integer): indicates the number of seconds
@@ -333,15 +333,15 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 6]
+Pauly & Thakore         Expires 10 December 2020                [Page 6]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    Upon receiving this information the client will use this information
    to direct the user to the the web portal (as specified by the user-
    portal-url value) to enable access to the external network.  Once the
-   user satisfies the requirements for extenal network access, the
+   user satisfies the requirements for external network access, the
    client SHOULD query the API server again to verify that it is no
    longer captive.
 
@@ -389,9 +389,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 7]
+Pauly & Thakore         Expires 10 December 2020                [Page 7]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    It is important to note that while the server authentication checks
@@ -445,9 +445,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 8]
+Pauly & Thakore         Expires 10 December 2020                [Page 8]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    Fragment identifier considerations: N/A
@@ -501,9 +501,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020                [Page 9]
+Pauly & Thakore         Expires 10 December 2020                [Page 9]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
 9.  Acknowledgments
@@ -557,9 +557,9 @@ Internet-Draft             Captive Portal API                   May 2020
 
 
 
-Pauly & Thakore          Expires 9 November 2020               [Page 10]
+Pauly & Thakore         Expires 10 December 2020               [Page 10]
 
-Internet-Draft             Captive Portal API                   May 2020
+Internet-Draft             Captive Portal API                  June 2020
 
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
@@ -581,16 +581,15 @@ Internet-Draft             Captive Portal API                   May 2020
    [I-D.ietf-capport-architecture]
               Larose, K., Dolson, D., and H. Liu, "CAPPORT
               Architecture", Work in Progress, Internet-Draft, draft-
-              ietf-capport-architecture-07, 20 April 2020,
+              ietf-capport-architecture-08, 11 May 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-capport-
-              architecture-07.txt>.
+              architecture-08.txt>.
 
    [I-D.ietf-capport-rfc7710bis]
               Kumari, W. and E. Kline, "Captive-Portal Identification in
               DHCP / RA", Work in Progress, Internet-Draft, draft-ietf-
-              capport-rfc7710bis-04, 28 April 2020,
-              <http://www.ietf.org/internet-drafts/draft-ietf-capport-
-              rfc7710bis-04.txt>.
+              capport-rfc7710bis-07, 23 May 2020, <http://www.ietf.org/
+              internet-drafts/draft-ietf-capport-rfc7710bis-07.txt>.
 
 Authors' Addresses
 
@@ -613,4 +612,5 @@ Authors' Addresses
 
 
 
-Pauly & Thakore          Expires 9 November 2020               [Page 11]
+
+Pauly & Thakore         Expires 10 December 2020               [Page 11]
