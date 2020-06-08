@@ -43,7 +43,7 @@ This document describes a HyperText Transfer Protocol (HTTP) Application Program
 
 - The state of captivity (whether or not the client has access to the Internet)
 - A URI that a client browser can present to a user to get out of captivity
-- An encrypted connection (using TLS for connections to both the API and user portal)
+- An encrypted connection (using TLS for connections to both the API and user-facing web portal)
 
 # Terminology {#terms}
 
@@ -89,7 +89,7 @@ Clients performing revocation checking will need some means of accessing revocat
 
 Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{!RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network MUST allow client access to the host specified in the URI.
 
-If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network by being redirected to a web portal.
+If the client is unable to validate the certificate presented by the API server, it MUST NOT proceed with any of the behavior for API interaction described in this document. The client will proceed to interact with the captive network as if the API capabilities were not present. It may still be possible for the user to access the network if the network redirects a cleartext webpage to a web portal.
 
 # API State Structure {#json-keys}
 
@@ -135,7 +135,7 @@ Content-Type: application/captive+json
 }
 ~~~~~~~~~~
 
-Upon receiving this information the client will use this information to direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for extenal network access, the client SHOULD query the API server again to verify that it is no longer captive.
+Upon receiving this information the client will use this information to direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for external network access, the client SHOULD query the API server again to verify that it is no longer captive.
 
 When the client requests the Captive Portal JSON content after gaining external network access, the server responds with updated JSON content:
 
