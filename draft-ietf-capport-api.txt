@@ -483,6 +483,9 @@ Internet-Draft             Captive Portal API                  June 2020
       value, how it might be used, and/or how it should be interpreted
       by clients.
 
+   Specification:  A reference to a specification that defines the key
+      and explains its usage.
+
    New assignments for Captive Portal API Keys Registry will be
    administered by IANA using the Specification Required policy
    [RFC8126].  The Designated Expert is expected to validate the
@@ -493,9 +496,6 @@ Internet-Draft             Captive Portal API                  June 2020
    non-generic use cases, particularly ones that are not specified as
    part of an IETF document, are encouraged to use a domain-specific
    prefix.
-
-
-
 
 
 
