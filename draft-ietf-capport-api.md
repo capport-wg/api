@@ -223,6 +223,9 @@ Type:
 Description:
 : A brief description explaining the meaning of the value, how it might be used, and/or how it should be interpreted by clients.
 
+Specification:
+: A reference to a specification that defines the key and explains its usage.
+
 New assignments for Captive Portal API Keys Registry will be administered by IANA using the Specification Required policy {{!RFC8126}}.
 The Designated Expert is expected to validate the existence of documentation describing new keys in a permanent
 publicly available specification. The expert is expected to validate that new keys have a clear meaning and do not
