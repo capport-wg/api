@@ -42,8 +42,8 @@ This document describes an HTTP API that allows clients to interact with a Capti
 This document describes a HyperText Transfer Protocol (HTTP) Application Program Interface (API) that allows clients to interact with a Captive Portal system. The API defined in this document has been designed to meet the requirements in the Captive Portal Architecture {{?I-D.ietf-capport-architecture}}. Specifically, the API provides:
 
 - The state of captivity (whether or not the client has access to the Internet)
-- A URI that a client browser can present to a user to get out of captivity
-- An encrypted connection (using TLS for connections to both the API and user-facing web portal)
+- A URI of a user-facing web portal that can be used to get out of captivity
+- Authenticated and encrypted connections, using TLS for connections to both the API and user-facing web portal
 
 # Terminology {#terms}
 
@@ -63,7 +63,7 @@ they appear in all capitals, as shown here.
 The Captive Portal Architecture defines several categories of interaction between clients and Captive Portal systems:
 
 1. Provisioning, in which a client discovers that a network has a captive portal, and learns the URI of the API server.
-2. API Server interaction, in which a client queries the state of the captive portal and retrieves the necessary information to get out of captivity.
+2. API Server interaction, in which a client queries the state of captivity and retrieves the necessary information to get out of captivity.
 3. Enforcement, in which the enforcement device in the network blocks disallowed traffic.
 
 This document defines the mechanisms used in the second category. It is assumed that the location of the Captive Portal API server has been discovered by the client as part of Provisioning. A set of mechanisms for discovering the API Server endpoint is defined in {{?I-D.ietf-capport-rfc7710bis}}.
@@ -71,21 +71,22 @@ This document defines the mechanisms used in the second category. It is assumed 
 # API Connection Details {#api-details}
 
 The API server endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 {{!RFC2818}}.
-The client SHOULD NOT assume that the URI for a given network attachment will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network.
 
 For example, if the Captive Portal API server is hosted at "example.org", the URI of the API could be "https://example.org/captive-portal/api"
 
+The client SHOULD NOT assume that the URI of the API server for a given network will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network.
+
 As described in Section 3 of {{?I-D.ietf-capport-architecture}}, the identity of the client needs to be visible to the Captive Portal API server in order for the server to correctly reply with the client's portal state. If the identifier used by the Captive Portal system is the client's set of IP addresses, the system needs to ensure that the same IP addresses are visible to both the API server and the enforcement device.
 
-If the API server needs information about the client identity that is not otherwise visible to it, the URI provided to the client during provisioning can be distinct per client. Thus, depending on how the Captive Portal system is configured, the URI might be unique for each client host and between sessions for the same client host.
+If the API server needs information about the client identity that is not otherwise visible to it, the URI provided to the client during provisioning SHOULD be distinct per client. Thus, depending on how the Captive Portal system is configured, the URI will be unique for each client host and between sessions for the same client host.
 
-For example, a Captive Portal system that uses per-client session URIs could use "https://example.org/captive-portal/api/X54PD" as its API URI.
+For example, a Captive Portal system that uses per-client session URIs could use "https://example.org/captive-portal/api/X54PD39JV" as its API URI.
 
 ## Server Authentication {#server-auth}
 
-The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication is aimed at allowing a user to be reasonably confident that the entity providing the Captive Portal API has a valid certificate for the hostname in the URI ("example.org", in the example above). The hostname of the API SHOULD be displayed to the user in order to indicate the entity which is providing the API service.
+The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication allows the client to ensure that the entity providing the Captive Portal API has a valid certificate for the hostname provisioned by the network using the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}, by following the rules for DNS domain name validation in {{!RFC6125}}.
 
-Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{!RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{!RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, a captive network could permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. In addition to connections to OCSP responders and CRLs, a captive network SHOULD also permit connections to Network Time Protocol (NTP) {{!RFC5905}} servers or other time-sync mechnisms to allow clients to accurately validate certificates.
+Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{!RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{!RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, especially for clients that do not support OCSP stapling, a captive network SHOULD permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. For more discussion on certificate revocation checks, see Section 6.5 of BCP 195 {{?RFC7525}}. In addition to connections to OCSP responders and CRLs, a captive network SHOULD also permit connections to Network Time Protocol (NTP) {{!RFC5905}} servers or other time-sync mechanisms to allow clients to accurately validate certificates.
 
 Certificates with missing intermediate certificates that rely on clients validating the certificate chain using the URI specified in the Authority Information Access (AIA) extension {{!RFC5280}} SHOULD NOT be used by the Captive Portal API server. If the certificates do require the use of AIA, the captive network MUST allow client access to the host specified in the URI.
 
@@ -101,22 +102,26 @@ The following key MUST be included in the top-level of the JSON structure return
 
 The following keys can be optionally included in the top-level of the JSON structure returned by the API server:
 
-- "user-portal-url" (string): provides the URL of a web portal with which a user can interact.
-- "venue-info-url" (string): provides the URL of a webpage or site on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
+- "user-portal-url" (string): provides the URL of a web portal that MUST be accessed over TLS with which a user can interact.
+- "venue-info-url" (string): provides the URL of a webpage or site that SHOULD be accessed over TLS on which the operator of the network has information that it wishes to share with the user (e.g., store info, maps, flight status, or entertainment).
 - "can-extend-session" (boolean): indicates that the URL specified as "user-portal-url" allows the user to extend a session once the client is no longer in a state of captivity. This provides a hint that a client system can suggest accessing the portal URL to the user when the session is near its limit in terms of time or bytes.
-- "seconds-remaining" (integer): indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not time-limited.
-- "bytes-remaining" (integer): indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client, including IP headers. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
+- "seconds-remaining" (number): an integer that indicates the number of seconds remaining, after which the client will be placed into a captive state. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is time-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not time-limited.
+- "bytes-remaining" (number): an integer that indicates the number of bytes remaining, after which the client will be in placed into a captive state. The byte count represents the sum of the total number of IP packet (layer 3) bytes sent and received by the client, including IP headers. Captive portal systems might not count traffic to whitelisted servers, such as the API server, but clients cannot rely on such behavior. The API server SHOULD include this value if the client is not captive (i.e. captive=false) and the client session is byte-limited, and SHOULD omit this value for captive clients (i.e. captive=true) or when the session is not byte-limited.
 
 The valid JSON keys can be extended by adding entries to the Captive Portal API Keys Registry ({{iana-section}}). If a client receives a key that it does not recognize, it MUST ignore the key and any associated values. All keys other than the ones defined in this document as "required" will be considered optional.
 
+Captive Portal JSON content can contain per-client data that is not appropriate to store in an intermediary cache. Captive Portal API servers SHOULD set the Cache-Control header field in any responses to "private", or a more restrictive value such as "no-store" {{!RFC7234}}.
+
+Client behavior for issuing requests for updated JSON content is implementation-specific, and can be based on user interaction or the indications of seconds and bytes remaining in a given session. If at any point the client does not receive valid JSON content from the API server, either due to an error or due to receiving no response, the client SHOULD continue to apply the most recent valid content it had received; or, if no content had been received previously, proceed to interact with the captive network as if the API capabilities were not present.
+
 # Example Interaction {#example}
 
-A client connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity. In this example, the client discovered the URI "https://example.org/captive-portal/api/X54PD" using one of the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}.
+A client connected to a captive network upon discovering the URI of the API server will query the API server to retrieve information about its captive state and conditions to escape captivity. In this example, the client discovered the URI "https://example.org/captive-portal/api/X54PD39JV" using one of the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}.
 
 To request the Captive Portal JSON content, a client sends an HTTP GET request:
 
 ~~~~~~~~~~
-GET /captive-portal/api/X54PD
+GET /captive-portal/api/X54PD39JV HTTP/1.1
 Host: example.org
 Accept: application/captive+json
 ~~~~~~~~~~
@@ -135,7 +140,7 @@ Content-Type: application/captive+json
 }
 ~~~~~~~~~~
 
-Upon receiving this information the client will use this information to direct the user to the the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for external network access, the client SHOULD query the API server again to verify that it is no longer captive.
+Upon receiving this information the client will use this information to direct the user to the web portal (as specified by the user-portal-url value) to enable access to the external network. Once the user satisfies the requirements for external network access, the client SHOULD query the API server again to verify that it is no longer captive.
 
 When the client requests the Captive Portal JSON content after gaining external network access, the server responds with updated JSON content:
 
@@ -154,19 +159,15 @@ Content-Type: application/captive+json
 }
 ~~~~~~~~~~
 
-Captive Portal JSON content can contain per-client data that is not appropriate to store in an intermediary cache. Captive Portal API servers SHOULD set the Cache-Control header in any responses to "private", or a more restrictive value {{!RFC7234}}.
-
 # Security Considerations {#security}
 
 One of the goals of this protocol is to improve the security of the communication between client hosts and Captive Portal systems. Client traffic is protected from passive listeners on the local network by requiring TLS-encrypted connections between the client and the Captive Portal API server, as described in {{api-details}}. All communication between the clients and the API server MUST be encrypted.
 
-In addition to encrypting communications between clients and Captive Portal systems, this protocol requires a basic level of authentication from the API server, as described in {{server-auth}}. Specifically, the API server MUST present a valid certificate on which the client can perform revocation checks. This allows the client to ensure that the API server has authority for a hostname that can be presented to a user.
-
-It is important to note that while the server authentication checks can validate a specific hostname, it is certainly possible for the API server to present a valid certificate for a hostname that uses non-standard characters or is otherwise designed to trick the user into believing that its hostname is some other, more trustworthy, name. This is a danger of any scenario in which a hostname is not typed in by a user.
+In addition to encrypting communications between clients and Captive Portal systems, this protocol requires a basic level of authentication from the API server, as described in {{server-auth}}. Specifically, the API server MUST present a valid certificate on which the client can perform revocation checks. This allows the client to ensure that the API server has authority for the hostname that was provisioned by the network using {{?I-D.ietf-capport-rfc7710bis}}. Note that this validation only confirms that the API server matches what the network's provisioning mechanism (such as DHCP or IPv6 Router Advertisements) provided, and not validating the security of those provisioning mechanisms or the user's trust relationship to the network.
 
 ## Privacy Considerations {#privacy}
 
-Information passed between a client and a Captive Portal system may include a user's personal information, such as a full name and credit card details. Therefore, it is important that Captive Portal API Servers do not allow access to the Captive Portal API over unencrypted sessions.
+Information passed between a client and the user-facing web portal may include a user's personal information, such as a full name and credit card details. Therefore, it is important that both the user-facing web portal and the API server that points a client to the web portal are only accessed over encrypted connections.
 
 # IANA Considerations {#iana-section}
 
