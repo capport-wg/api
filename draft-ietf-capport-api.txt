@@ -5,8 +5,8 @@
 Captive Portal Interaction                                 T. Pauly, Ed.
 Internet-Draft                                                Apple Inc.
 Intended status: Standards Track                         D. Thakore, Ed.
-Expires: 10 December 2020                                      CableLabs
-                                                             8 June 2020
+Expires: 12 December 2020                                      CableLabs
+                                                            10 June 2020
 
 
                            Captive Portal API
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 December 2020.
+   This Internet-Draft will expire on 12 December 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Pauly & Thakore         Expires 10 December 2020                [Page 1]
+Pauly & Thakore         Expires 12 December 2020                [Page 1]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -67,7 +67,7 @@ Table of Contents
      4.1.  Server Authentication . . . . . . . . . . . . . . . . . .   4
    5.  API State Structure . . . . . . . . . . . . . . . . . . . . .   5
    6.  Example Interaction . . . . . . . . . . . . . . . . . . . . .   6
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
      7.1.  Privacy Considerations  . . . . . . . . . . . . . . . . .   8
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
      8.1.  Captive Portal API JSON Media Type Registration . . . . .   8
@@ -76,7 +76,7 @@ Table of Contents
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  10
      10.2.  Informative References . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -90,11 +90,11 @@ Table of Contents
    *  The state of captivity (whether or not the client has access to
       the Internet)
 
-   *  A URI that a client browser can present to a user to get out of
+   *  A URI of a user-facing web portal that can be used to get out of
       captivity
 
-   *  An encrypted connection (using TLS for connections to both the API
-      and user-facing web portal)
+   *  Authenticated and encrypted connections, using TLS for connections
+      to both the API and user-facing web portal
 
 2.  Terminology
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Pauly & Thakore         Expires 10 December 2020                [Page 2]
+Pauly & Thakore         Expires 12 December 2020                [Page 2]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -133,8 +133,8 @@ Internet-Draft             Captive Portal API                  June 2020
        captive portal, and learns the URI of the API server.
 
    2.  API Server interaction, in which a client queries the state of
-       the captive portal and retrieves the necessary information to get
-       out of captivity.
+       captivity and retrieves the necessary information to get out of
+       captivity.
 
    3.  Enforcement, in which the enforcement device in the network
        blocks disallowed traffic.
@@ -148,45 +148,41 @@ Internet-Draft             Captive Portal API                  June 2020
 4.  API Connection Details
 
    The API server endpoint MUST be accessed using HTTP over TLS (HTTPS)
-   and SHOULD be served on port 443 [RFC2818].  The client SHOULD NOT
-   assume that the URI for a given network attachment will stay the
-   same, and SHOULD rely on the discovery or provisioning process each
-   time it joins the network.
+   and SHOULD be served on port 443 [RFC2818].
 
    For example, if the Captive Portal API server is hosted at
    "example.org", the URI of the API could be "https://example.org/
    captive-portal/api"
 
-
-
-
-
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 3]
-
-Internet-Draft             Captive Portal API                  June 2020
-
+   The client SHOULD NOT assume that the URI of the API server for a
+   given network will stay the same, and SHOULD rely on the discovery or
+   provisioning process each time it joins the network.
 
    As described in Section 3 of [I-D.ietf-capport-architecture], the
    identity of the client needs to be visible to the Captive Portal API
    server in order for the server to correctly reply with the client's
    portal state.  If the identifier used by the Captive Portal system is
+
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 3]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    the client's set of IP addresses, the system needs to ensure that the
    same IP addresses are visible to both the API server and the
    enforcement device.
 
    If the API server needs information about the client identity that is
    not otherwise visible to it, the URI provided to the client during
-   provisioning can be distinct per client.  Thus, depending on how the
-   Captive Portal system is configured, the URI might be unique for each
-   client host and between sessions for the same client host.
+   provisioning SHOULD be distinct per client.  Thus, depending on how
+   the Captive Portal system is configured, the URI will be unique for
+   each client host and between sessions for the same client host.
 
    For example, a Captive Portal system that uses per-client session
-   URIs could use "https://example.org/captive-portal/api/X54PD" as its
-   API URI.
+   URIs could use "https://example.org/captive-portal/api/X54PD39JV" as
+   its API URI.
 
 4.1.  Server Authentication
 
@@ -195,12 +191,11 @@ Internet-Draft             Captive Portal API                  June 2020
    integrity and confidentiality of the API exchange from other parties
    on the local network; and second, it provides the client of the API
    an opportunity to authenticate the server that is hosting the API.
-   This authentication is aimed at allowing a user to be reasonably
-   confident that the entity providing the Captive Portal API has a
-   valid certificate for the hostname in the URI ("example.org", in the
-   example above).  The hostname of the API SHOULD be displayed to the
-   user in order to indicate the entity which is providing the API
-   service.
+   This authentication allows the client to ensure that the entity
+   providing the Captive Portal API has a valid certificate for the
+   hostname provisioned by the network using the mechanisms defined in
+   [I-D.ietf-capport-rfc7710bis], by following the rules for DNS domain
+   name validation in [RFC6125].
 
    Clients performing revocation checking will need some means of
    accessing revocation information for certificates presented by the
@@ -208,20 +203,25 @@ Internet-Draft             Captive Portal API                  June 2020
    stapling, using the TLS Certificate Status Request extension
    [RFC6066] SHOULD be used.  OCSP stapling allows a client to perform
    revocation checks without initiating new connections.  To allow for
-   other forms of revocation checking, a captive network could permit
+   other forms of revocation checking, especially for clients that do
+   not support OCSP stapling, a captive network SHOULD permit
    connections to OCSP responders or Certificate Revocation Lists (CRLs)
-   that are referenced by certificates provided by the API server.  In
-   addition to connections to OCSP responders and CRLs, a captive
-   network SHOULD also permit connections to Network Time Protocol (NTP)
-   [RFC5905] servers or other time-sync mechnisms to allow clients to
-   accurately validate certificates.
+   that are referenced by certificates provided by the API server.  For
+   more discussion on certificate revocation checks, see Section 6.5 of
+   BCP 195 [RFC7525].  In addition to connections to OCSP responders and
+   CRLs, a captive network SHOULD also permit connections to Network
+   Time Protocol (NTP) [RFC5905] servers or other time-sync mechanisms
+   to allow clients to accurately validate certificates.
 
 
 
 
 
 
-Pauly & Thakore         Expires 10 December 2020                [Page 4]
+
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 4]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -261,13 +261,13 @@ Internet-Draft             Captive Portal API                  June 2020
    The following keys can be optionally included in the top-level of the
    JSON structure returned by the API server:
 
-   *  "user-portal-url" (string): provides the URL of a web portal with
-      which a user can interact.
+   *  "user-portal-url" (string): provides the URL of a web portal that
+      MUST be accessed over TLS with which a user can interact.
 
    *  "venue-info-url" (string): provides the URL of a webpage or site
-      on which the operator of the network has information that it
-      wishes to share with the user (e.g., store info, maps, flight
-      status, or entertainment).
+      that SHOULD be accessed over TLS on which the operator of the
+      network has information that it wishes to share with the user
+      (e.g., store info, maps, flight status, or entertainment).
 
    *  "can-extend-session" (boolean): indicates that the URL specified
       as "user-portal-url" allows the user to extend a session once the
@@ -277,24 +277,24 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 10 December 2020                [Page 5]
+Pauly & Thakore         Expires 12 December 2020                [Page 5]
 
 Internet-Draft             Captive Portal API                  June 2020
 
 
-   *  "seconds-remaining" (integer): indicates the number of seconds
-      remaining, after which the client will be placed into a captive
-      state.  The API server SHOULD include this value if the client is
-      not captive (i.e. captive=false) and the client session is time-
-      limited, and SHOULD omit this value for captive clients (i.e.
-      captive=true) or when the session is not time-limited.
+   *  "seconds-remaining" (number): an integer that indicates the number
+      of seconds remaining, after which the client will be placed into a
+      captive state.  The API server SHOULD include this value if the
+      client is not captive (i.e. captive=false) and the client session
+      is time-limited, and SHOULD omit this value for captive clients
+      (i.e. captive=true) or when the session is not time-limited.
 
-   *  "bytes-remaining" (integer): indicates the number of bytes
-      remaining, after which the client will be in placed into a captive
-      state.  The byte count represents the sum of the total number of
-      IP packet (layer 3) bytes sent and received by the client,
-      including IP headers.  Captive portal systems might not count
-      traffic to whitelisted servers, such as the API server, but
+   *  "bytes-remaining" (number): an integer that indicates the number
+      of bytes remaining, after which the client will be in placed into
+      a captive state.  The byte count represents the sum of the total
+      number of IP packet (layer 3) bytes sent and received by the
+      client, including IP headers.  Captive portal systems might not
+      count traffic to whitelisted servers, such as the API server, but
       clients cannot rely on such behavior.  The API server SHOULD
       include this value if the client is not captive (i.e.
       captive=false) and the client session is byte-limited, and SHOULD
@@ -307,36 +307,45 @@ Internet-Draft             Captive Portal API                  June 2020
    values.  All keys other than the ones defined in this document as
    "required" will be considered optional.
 
+   Captive Portal JSON content can contain per-client data that is not
+   appropriate to store in an intermediary cache.  Captive Portal API
+   servers SHOULD set the Cache-Control header field in any responses to
+   "private", or a more restrictive value such as "no-store" [RFC7234].
+
+   Client behavior for issuing requests for updated JSON content is
+   implementation-specific, and can be based on user interaction or the
+   indications of seconds and bytes remaining in a given session.  If at
+   any point the client does not receive valid JSON content from the API
+   server, either due to an error or due to receiving no response, the
+   client SHOULD continue to apply the most recent valid content it had
+   received; or, if no content had been received previously, proceed to
+   interact with the captive network as if the API capabilities were not
+   present.
+
 6.  Example Interaction
 
    A client connected to a captive network upon discovering the URI of
    the API server will query the API server to retrieve information
    about its captive state and conditions to escape captivity.  In this
    example, the client discovered the URI "https://example.org/captive-
-   portal/api/X54PD" using one of the mechanisms defined in
+   portal/api/X54PD39JV" using one of the mechanisms defined in
    [I-D.ietf-capport-rfc7710bis].
+
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 6]
+
+Internet-Draft             Captive Portal API                  June 2020
+
 
    To request the Captive Portal JSON content, a client sends an HTTP
    GET request:
 
-   GET /captive-portal/api/X54PD
+   GET /captive-portal/api/X54PD39JV HTTP/1.1
    Host: example.org
    Accept: application/captive+json
 
    The server then responds with the JSON content for that client:
-
-
-
-
-
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 6]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    HTTP/1.1 200 OK
    Cache-Control: private
@@ -349,7 +358,7 @@ Internet-Draft             Captive Portal API                  June 2020
    }
 
    Upon receiving this information the client will use this information
-   to direct the user to the the web portal (as specified by the user-
+   to direct the user to the web portal (as specified by the user-
    portal-url value) to enable access to the external network.  Once the
    user satisfies the requirements for external network access, the
    client SHOULD query the API server again to verify that it is no
@@ -372,10 +381,18 @@ Internet-Draft             Captive Portal API                  June 2020
       "can-extend-session": true
    }
 
-   Captive Portal JSON content can contain per-client data that is not
-   appropriate to store in an intermediary cache.  Captive Portal API
-   servers SHOULD set the Cache-Control header in any responses to
-   "private", or a more restrictive value [RFC7234].
+
+
+
+
+
+
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 7]
+
+Internet-Draft             Captive Portal API                  June 2020
+
 
 7.  Security Considerations
 
@@ -387,36 +404,26 @@ Internet-Draft             Captive Portal API                  June 2020
    communication between the clients and the API server MUST be
    encrypted.
 
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 7]
-
-Internet-Draft             Captive Portal API                  June 2020
-
-
    In addition to encrypting communications between clients and Captive
    Portal systems, this protocol requires a basic level of
    authentication from the API server, as described in Section 4.1.
    Specifically, the API server MUST present a valid certificate on
    which the client can perform revocation checks.  This allows the
-   client to ensure that the API server has authority for a hostname
-   that can be presented to a user.
-
-   It is important to note that while the server authentication checks
-   can validate a specific hostname, it is certainly possible for the
-   API server to present a valid certificate for a hostname that uses
-   non-standard characters or is otherwise designed to trick the user
-   into believing that its hostname is some other, more trustworthy,
-   name.  This is a danger of any scenario in which a hostname is not
-   typed in by a user.
+   client to ensure that the API server has authority for the hostname
+   that was provisioned by the network using
+   [I-D.ietf-capport-rfc7710bis].  Note that this validation only
+   confirms that the API server matches what the network's provisioning
+   mechanism (such as DHCP or IPv6 Router Advertisements) provided, and
+   not validating the security of those provisioning mechanisms or the
+   user's trust relationship to the network.
 
 7.1.  Privacy Considerations
 
-   Information passed between a client and a Captive Portal system may
-   include a user's personal information, such as a full name and credit
-   card details.  Therefore, it is important that Captive Portal API
-   Servers do not allow access to the Captive Portal API over
-   unencrypted sessions.
+   Information passed between a client and the user-facing web portal
+   may include a user's personal information, such as a full name and
+   credit card details.  Therefore, it is important that both the user-
+   facing web portal and the API server that points a client to the web
+   portal are only accessed over encrypted connections.
 
 8.  IANA Considerations
 
@@ -435,20 +442,20 @@ Internet-Draft             Captive Portal API                  June 2020
 
    Required parameters: N/A
 
+
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 8]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    Optional parameters: N/A
 
    Encoding considerations: Encoding considerations are identical to
    those specified for the "application/json" media type.
 
    Security considerations: See Section 7
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 8]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    Interoperability considerations: This document specifies format of
    conforming messages and the interpretation thereof.
@@ -492,20 +499,19 @@ Internet-Draft             Captive Portal API                  June 2020
       value, how it might be used, and/or how it should be interpreted
       by clients.
 
+
+
+Pauly & Thakore         Expires 12 December 2020                [Page 9]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    Specification:  A reference to a specification that defines the key
       and explains its usage.
 
    New assignments for Captive Portal API Keys Registry will be
    administered by IANA using the Specification Required policy
    [RFC8126].  The Designated Expert is expected to validate the
-
-
-
-Pauly & Thakore         Expires 10 December 2020                [Page 9]
-
-Internet-Draft             Captive Portal API                  June 2020
-
-
    existence of documentation describing new keys in a permanent
    publicly available specification.  The expert is expected to validate
    that new keys have a clear meaning and do not create unnecessary
@@ -549,18 +555,25 @@ Internet-Draft             Captive Portal API                  June 2020
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/info/rfc6066>.
 
+
+
+Pauly & Thakore         Expires 12 December 2020               [Page 10]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
+   [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
+              Verification of Domain-Based Application Service Identity
+              within Internet Public Key Infrastructure Using X.509
+              (PKIX) Certificates in the Context of Transport Layer
+              Security (TLS)", RFC 6125, DOI 10.17487/RFC6125, March
+              2011, <https://www.rfc-editor.org/info/rfc6125>.
+
    [RFC6960]  Santesson, S., Myers, M., Ankney, R., Malpani, A.,
               Galperin, S., and C. Adams, "X.509 Internet Public Key
               Infrastructure Online Certificate Status Protocol - OCSP",
               RFC 6960, DOI 10.17487/RFC6960, June 2013,
               <https://www.rfc-editor.org/info/rfc6960>.
-
-
-
-Pauly & Thakore         Expires 10 December 2020               [Page 10]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
@@ -596,6 +609,21 @@ Internet-Draft             Captive Portal API                  June 2020
               capport-rfc7710bis-07, 23 May 2020, <http://www.ietf.org/
               internet-drafts/draft-ietf-capport-rfc7710bis-07.txt>.
 
+
+
+
+
+Pauly & Thakore         Expires 12 December 2020               [Page 11]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
+   [RFC7525]  Sheffer, Y., Holz, R., and P. Saint-Andre,
+              "Recommendations for Secure Use of Transport Layer
+              Security (TLS) and Datagram Transport Layer Security
+              (DTLS)", BCP 195, RFC 7525, DOI 10.17487/RFC7525, May
+              2015, <https://www.rfc-editor.org/info/rfc7525>.
+
 Authors' Addresses
 
    Tommy Pauly (editor)
@@ -610,14 +638,6 @@ Authors' Addresses
    Darshak Thakore (editor)
    CableLabs
    858 Coal Creek Circle
-
-
-
-Pauly & Thakore         Expires 10 December 2020               [Page 11]
-
-Internet-Draft             Captive Portal API                  June 2020
-
-
    Louisville, CO 80027,
    United States of America
 
@@ -649,24 +669,4 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pauly & Thakore         Expires 10 December 2020               [Page 12]
+Pauly & Thakore         Expires 12 December 2020               [Page 12]
