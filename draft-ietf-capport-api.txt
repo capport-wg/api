@@ -70,12 +70,12 @@ Table of Contents
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
      7.1.  Privacy Considerations  . . . . . . . . . . . . . . . . .   8
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-     8.1.  Captive Portal API JSON Media Type Registration . . . . .   8
+     8.1.  Captive Portal API JSON Media Type Registration . . . . .   9
      8.2.  Captive Portal API Keys Registry  . . . . . . . . . . . .   9
    9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  10
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  10
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  11
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  12
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
@@ -198,8 +198,8 @@ Internet-Draft             Captive Portal API                  June 2020
    This authentication allows the client to ensure that the entity
    providing the Captive Portal API has a valid certificate for the
    hostname provisioned by the network using the mechanisms defined in
-   [I-D.ietf-capport-rfc7710bis], by following the rules for DNS domain
-   name validation in [RFC6125].
+   [I-D.ietf-capport-rfc7710bis], by validating that a DNS-ID [RFC6125]
+   on the certificate is equal to the provisioned hostname.
 
    Clients performing revocation checking will need some means of
    accessing revocation information for certificates presented by the
@@ -425,11 +425,30 @@ Internet-Draft             Captive Portal API                  June 2020
    facing web portal and the API server that points a client to the web
    portal are only accessed over encrypted connections.
 
+   It is important to note that although communication to the user-
+   facing web portal requires using TLS, the authentication only
+   validates that the web portal server matches the name in the URI
+   provided by the API server.  Since this is not a name that a user
+   typed in, the hostname of the web site that would be presented to the
+   user may include "confusable characters" that can mislead the user.
+   See Section 12.5 of [RFC8264] for a discussion of confusable
+   characters.
+
 8.  IANA Considerations
 
    IANA is requested to create a registration for an "application/
    captive+json" media type (Section 8.1) and a registry for fields in
    that format (Section 8.2).
+
+
+
+
+
+
+Pauly & Thakore         Expires 17 December 2020                [Page 8]
+
+Internet-Draft             Captive Portal API                  June 2020
+
 
 8.1.  Captive Portal API JSON Media Type Registration
 
@@ -441,14 +460,6 @@ Internet-Draft             Captive Portal API                  June 2020
    Subtype name: captive+json
 
    Required parameters: N/A
-
-
-
-
-Pauly & Thakore         Expires 17 December 2020                [Page 8]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    Optional parameters: N/A
 
@@ -488,6 +499,13 @@ Internet-Draft             Captive Portal API                  June 2020
    Portal API data structures.  The initial contents of this registry
    are provided in Section 5.
 
+
+
+Pauly & Thakore         Expires 17 December 2020                [Page 9]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    Each entry in the registry contains the following fields:
 
    Key:  The JSON key being registered, in string format.
@@ -499,13 +517,6 @@ Internet-Draft             Captive Portal API                  June 2020
       value, how it might be used, and/or how it should be interpreted
       by clients.
 
-
-
-Pauly & Thakore         Expires 17 December 2020                [Page 9]
-
-Internet-Draft             Captive Portal API                  June 2020
-
-
    Specification:  A reference to a specification that defines the key
       and explains its usage.
 
@@ -513,12 +524,12 @@ Internet-Draft             Captive Portal API                  June 2020
    administered by IANA using the Specification Required policy
    [RFC8126].  The Designated Expert is expected to validate the
    existence of documentation describing new keys in a permanent
-   publicly available specification.  The expert is expected to validate
-   that new keys have a clear meaning and do not create unnecessary
-   confusion or overlap with existing keys.  Keys that are specific to
-   non-generic use cases, particularly ones that are not specified as
-   part of an IETF document, are encouraged to use a domain-specific
-   prefix.
+   publicly available specification, such as an Internet Draft or RFC.
+   The expert is expected to validate that new keys have a clear meaning
+   and do not create unnecessary confusion or overlap with existing
+   keys.  Keys that are specific to non-generic use cases, particularly
+   ones that are not specified as part of an IETF document, are
+   encouraged to use a domain-specific prefix.
 
 9.  Acknowledgments
 
@@ -539,6 +550,18 @@ Internet-Draft             Captive Portal API                  June 2020
               DOI 10.17487/RFC2818, May 2000,
               <https://www.rfc-editor.org/info/rfc2818>.
 
+
+
+
+
+
+
+
+Pauly & Thakore         Expires 17 December 2020               [Page 10]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -554,13 +577,6 @@ Internet-Draft             Captive Portal API                  June 2020
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/info/rfc6066>.
-
-
-
-Pauly & Thakore         Expires 17 December 2020               [Page 10]
-
-Internet-Draft             Captive Portal API                  June 2020
-
 
    [RFC6125]  Saint-Andre, P. and J. Hodges, "Representation and
               Verification of Domain-Based Application Service Identity
@@ -594,6 +610,14 @@ Internet-Draft             Captive Portal API                  June 2020
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
 
+
+
+
+Pauly & Thakore         Expires 17 December 2020               [Page 11]
+
+Internet-Draft             Captive Portal API                  June 2020
+
+
 10.2.  Informative References
 
    [I-D.ietf-capport-architecture]
@@ -609,20 +633,17 @@ Internet-Draft             Captive Portal API                  June 2020
               capport-rfc7710bis-07, 23 May 2020, <http://www.ietf.org/
               internet-drafts/draft-ietf-capport-rfc7710bis-07.txt>.
 
-
-
-
-
-Pauly & Thakore         Expires 17 December 2020               [Page 11]
-
-Internet-Draft             Captive Portal API                  June 2020
-
-
    [RFC7525]  Sheffer, Y., Holz, R., and P. Saint-Andre,
               "Recommendations for Secure Use of Transport Layer
               Security (TLS) and Datagram Transport Layer Security
               (DTLS)", BCP 195, RFC 7525, DOI 10.17487/RFC7525, May
               2015, <https://www.rfc-editor.org/info/rfc7525>.
+
+   [RFC8264]  Saint-Andre, P. and M. Blanchet, "PRECIS Framework:
+              Preparation, Enforcement, and Comparison of
+              Internationalized Strings in Application Protocols",
+              RFC 8264, DOI 10.17487/RFC8264, October 2017,
+              <https://www.rfc-editor.org/info/rfc8264>.
 
 Authors' Addresses
 
@@ -642,27 +663,6 @@ Authors' Addresses
    United States of America
 
    Email: d.thakore@cablelabs.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
