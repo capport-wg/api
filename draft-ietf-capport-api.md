@@ -82,7 +82,7 @@ For example, a Captive Portal system that uses per-client session URIs could use
 
 ## Server Authentication {#server-auth}
 
-The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication allows the client to ensure that the entity providing the Captive Portal API has a valid certificate for the hostname provisioned by the network using the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}, by following the rules for DNS domain name validation in {{!RFC6125}}.
+The purpose of accessing the Captive Portal API over an HTTPS connection is twofold: first, the encrypted connection protects the integrity and confidentiality of the API exchange from other parties on the local network; and second, it provides the client of the API an opportunity to authenticate the server that is hosting the API. This authentication allows the client to ensure that the entity providing the Captive Portal API has a valid certificate for the hostname provisioned by the network using the mechanisms defined in {{?I-D.ietf-capport-rfc7710bis}}, by validating that a DNS-ID {{!RFC6125}} on the certificate is equal to the provisioned hostname.
 
 Clients performing revocation checking will need some means of accessing revocation information for certificates presented by the API server. Online Certificate Status Protocol {{!RFC6960}} (OCSP) stapling, using the TLS Certificate Status Request extension {{!RFC6066}} SHOULD be used. OCSP stapling allows a client to perform revocation checks without initiating new connections. To allow for other forms of revocation checking, especially for clients that do not support OCSP stapling, a captive network SHOULD permit connections to OCSP responders or Certificate Revocation Lists (CRLs) that are referenced by certificates provided by the API server. For more discussion on certificate revocation checks, see Section 6.5 of BCP 195 {{?RFC7525}}. In addition to connections to OCSP responders and CRLs, a captive network SHOULD also permit connections to Network Time Protocol (NTP) {{!RFC5905}} servers or other time-sync mechanisms to allow clients to accurately validate certificates.
 
@@ -167,6 +167,8 @@ In addition to encrypting communications between clients and Captive Portal syst
 
 Information passed between a client and the user-facing web portal may include a user's personal information, such as a full name and credit card details. Therefore, it is important that both the user-facing web portal and the API server that points a client to the web portal are only accessed over encrypted connections.
 
+It is important to note that although communication to the user-facing web portal requires using TLS, the authentication only validates that the web portal server matches the name in the URI provided by the API server. Since this is not a name that a user typed in, the hostname of the web site that would be presented to the user may include "confusable characters" that can mislead the user. See Section 12.5 of {{?RFC8264}} for a discussion of confusable characters.
+
 # IANA Considerations {#iana-section}
 
 IANA is requested to create a registration for an "application/captive+json" media type ({{iana-json}}) and a registry for fields in that format ({{iana-field-reg}}).
@@ -227,9 +229,10 @@ Specification:
 
 New assignments for Captive Portal API Keys Registry will be administered by IANA using the Specification Required policy {{!RFC8126}}.
 The Designated Expert is expected to validate the existence of documentation describing new keys in a permanent
-publicly available specification. The expert is expected to validate that new keys have a clear meaning and do not
-create unnecessary confusion or overlap with existing keys. Keys that are specific to non-generic use cases, particularly
-ones that are not specified as part of an IETF document, are encouraged to use a domain-specific prefix.
+publicly available specification, such as an Internet Draft or RFC. The expert is expected to validate that new keys have a
+clear meaning and do not create unnecessary confusion or overlap with existing keys. Keys that are specific to
+non-generic use cases, particularly ones that are not specified as part of an IETF document, are encouraged to
+use a domain-specific prefix.
 
 # Acknowledgments {#thanksall}
 
