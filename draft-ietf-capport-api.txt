@@ -5,8 +5,8 @@
 Captive Portal Interaction                                 T. Pauly, Ed.
 Internet-Draft                                                Apple Inc.
 Intended status: Standards Track                         D. Thakore, Ed.
-Expires: 12 December 2020                                      CableLabs
-                                                            10 June 2020
+Expires: 17 December 2020                                      CableLabs
+                                                            15 June 2020
 
 
                            Captive Portal API
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 December 2020.
+   This Internet-Draft will expire on 17 December 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 1]
+Pauly & Thakore         Expires 17 December 2020                [Page 1]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 2]
+Pauly & Thakore         Expires 17 December 2020                [Page 2]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -147,29 +147,33 @@ Internet-Draft             Captive Portal API                  June 2020
 
 4.  API Connection Details
 
-   The API server endpoint MUST be accessed using HTTP over TLS (HTTPS)
-   and SHOULD be served on port 443 [RFC2818].
-
-   For example, if the Captive Portal API server is hosted at
-   "example.org", the URI of the API could be "https://example.org/
-   captive-portal/api"
+   The API server endpoint MUST be accessed over HTTP using an https URI
+   [RFC2818], and SHOULD use the default https port.  For example, if
+   the Captive Portal API server is hosted at "example.org", the URI of
+   the API could be "https://example.org/captive-portal/api"
 
    The client SHOULD NOT assume that the URI of the API server for a
    given network will stay the same, and SHOULD rely on the discovery or
    provisioning process each time it joins the network.
 
-   As described in Section 3 of [I-D.ietf-capport-architecture], the
-   identity of the client needs to be visible to the Captive Portal API
-   server in order for the server to correctly reply with the client's
-   portal state.  If the identifier used by the Captive Portal system is
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 3]
+
+
+
+
+
+
+Pauly & Thakore         Expires 17 December 2020                [Page 3]
 
 Internet-Draft             Captive Portal API                  June 2020
 
 
+   As described in Section 3 of [I-D.ietf-capport-architecture], the
+   identity of the client needs to be visible to the Captive Portal API
+   server in order for the server to correctly reply with the client's
+   portal state.  If the identifier used by the Captive Portal system is
    the client's set of IP addresses, the system needs to ensure that the
    same IP addresses are visible to both the API server and the
    enforcement device.
@@ -217,11 +221,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-
-
-
-
-Pauly & Thakore         Expires 12 December 2020                [Page 4]
+Pauly & Thakore         Expires 17 December 2020                [Page 4]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -277,7 +277,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 5]
+Pauly & Thakore         Expires 17 December 2020                [Page 5]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -333,7 +333,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 6]
+Pauly & Thakore         Expires 17 December 2020                [Page 6]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -389,7 +389,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 7]
+Pauly & Thakore         Expires 17 December 2020                [Page 7]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -445,7 +445,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 8]
+Pauly & Thakore         Expires 17 December 2020                [Page 8]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -501,7 +501,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020                [Page 9]
+Pauly & Thakore         Expires 17 December 2020                [Page 9]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -557,7 +557,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020               [Page 10]
+Pauly & Thakore         Expires 17 December 2020               [Page 10]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -613,7 +613,7 @@ Internet-Draft             Captive Portal API                  June 2020
 
 
 
-Pauly & Thakore         Expires 12 December 2020               [Page 11]
+Pauly & Thakore         Expires 17 December 2020               [Page 11]
 
 Internet-Draft             Captive Portal API                  June 2020
 
@@ -669,4 +669,4 @@ Authors' Addresses
 
 
 
-Pauly & Thakore         Expires 12 December 2020               [Page 12]
+Pauly & Thakore         Expires 17 December 2020               [Page 12]
