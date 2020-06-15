@@ -70,9 +70,7 @@ This document defines the mechanisms used in the second category. It is assumed 
 
 # API Connection Details {#api-details}
 
-The API server endpoint MUST be accessed using HTTP over TLS (HTTPS) and SHOULD be served on port 443 {{!RFC2818}}.
-
-For example, if the Captive Portal API server is hosted at "example.org", the URI of the API could be "https://example.org/captive-portal/api"
+The API server endpoint MUST be accessed over HTTP using an https URI {{!RFC2818}}, and SHOULD use the default https port. For example, if the Captive Portal API server is hosted at "example.org", the URI of the API could be "https://example.org/captive-portal/api"
 
 The client SHOULD NOT assume that the URI of the API server for a given network will stay the same, and SHOULD rely on the discovery or provisioning process each time it joins the network.
 
